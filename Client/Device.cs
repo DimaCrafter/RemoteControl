@@ -1,15 +1,11 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace RCClient {
     class Device {
@@ -144,5 +140,11 @@ namespace RCClient {
 
             Logs.Write("Поиск в сети " + network + " окончен");
         }
+    }
+
+    class DeviceItem : SerializableStruct<DeviceItem> {
+        public string mac;
+        public string name;
+        public string ip;
     }
 }

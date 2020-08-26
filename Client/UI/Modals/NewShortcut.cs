@@ -13,8 +13,8 @@ namespace RCClient.UI.Modals {
         private void onLoad (object sender, EventArgs e) {
             Icon = Icons.GetSystemIcon("shell32.dll", 263, true);
             fileIcon.Image = SystemIcons.Application.ToBitmap();
-            openFileBtn.Image = Icons.GetSystemBitmap("shell32.dll", 0, false);
-            openFolderBtn.Image = Icons.GetSystemBitmap("shell32.dll", 3, false);
+            openFileBtn.image = Icons.GetSystemBitmap("shell32.dll", 0, false);
+            openFolderBtn.image = Icons.GetSystemBitmap("shell32.dll", 3, false);
         }
 
         private void onDragStart (object sender, DragEventArgs e) {
@@ -57,21 +57,12 @@ namespace RCClient.UI.Modals {
             pathInput.Text = openFolderDialog.SelectedPath;
         }
 
-        private void ImgButtonEnter (object sender, EventArgs e) {
-            var btn = (Control) sender;
-            btn.BackColor = SystemColors.Highlight;
-        }
-
-        private void ImgButtonLeave (object sender, EventArgs e) {
-            var btn = (Control) sender;
-            btn.BackColor = SystemColors.Control;
-        }
-
         private void Submit (object sender, EventArgs e) {
             SetResult(new ShortcutInfo {
                 path = pathInput.Text,
                 name = nameInput.Text,
-                isCopy = copyCheckbox.Checked
+                isCopy = copyCheckbox.Checked,
+                icon = (Bitmap) fileIcon.Image
             });
         }
     }
@@ -80,5 +71,6 @@ namespace RCClient.UI.Modals {
         public string path;
         public string name;
         public bool isCopy;
+        public Bitmap icon;
     }
 }

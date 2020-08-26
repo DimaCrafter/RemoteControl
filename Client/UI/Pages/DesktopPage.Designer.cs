@@ -27,8 +27,10 @@
             this.listItemMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.listViewMenu_AddShortcut = new System.Windows.Forms.ToolStripMenuItem();
             this.listViewMenu_AddLink = new System.Windows.Forms.ToolStripMenuItem();
+            this.listViewMenu_ChangeBG = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.listView = new System.Windows.Forms.ListView();
+            this.bgSelectDialog = new System.Windows.Forms.OpenFileDialog();
             this.listItemMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -36,23 +38,31 @@
             // 
             this.listItemMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.listViewMenu_AddShortcut,
-            this.listViewMenu_AddLink});
+            this.listViewMenu_AddLink,
+            this.listViewMenu_ChangeBG});
             this.listItemMenu.Name = "listItemMenu";
-            this.listItemMenu.Size = new System.Drawing.Size(181, 70);
+            this.listItemMenu.Size = new System.Drawing.Size(170, 70);
             // 
             // listViewMenu_AddShortcut
             // 
             this.listViewMenu_AddShortcut.Name = "listViewMenu_AddShortcut";
-            this.listViewMenu_AddShortcut.Size = new System.Drawing.Size(180, 22);
+            this.listViewMenu_AddShortcut.Size = new System.Drawing.Size(169, 22);
             this.listViewMenu_AddShortcut.Text = "Добавить ярлык";
             this.listViewMenu_AddShortcut.Click += new System.EventHandler(this.AddShortcut);
             // 
             // listViewMenu_AddLink
             // 
             this.listViewMenu_AddLink.Name = "listViewMenu_AddLink";
-            this.listViewMenu_AddLink.Size = new System.Drawing.Size(180, 22);
+            this.listViewMenu_AddLink.Size = new System.Drawing.Size(169, 22);
             this.listViewMenu_AddLink.Text = "Добавить ссылку";
             this.listViewMenu_AddLink.Click += new System.EventHandler(this.AddLink);
+            // 
+            // listViewMenu_ChangeBG
+            // 
+            this.listViewMenu_ChangeBG.Name = "listViewMenu_ChangeBG";
+            this.listViewMenu_ChangeBG.Size = new System.Drawing.Size(169, 22);
+            this.listViewMenu_ChangeBG.Text = "Сменить фон";
+            this.listViewMenu_ChangeBG.Click += new System.EventHandler(this.ChangeBG);
             // 
             // panel1
             // 
@@ -90,6 +100,11 @@
             this.listView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseMove);
             this.listView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseUp);
             // 
+            // bgSelectDialog
+            // 
+            this.bgSelectDialog.DefaultExt = "Изображения|*.jpeg *.jpg, *.png, *.gif";
+            this.bgSelectDialog.Title = "Выбор фона рабочего стола";
+            // 
             // DesktopPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -114,5 +129,7 @@
         private System.Windows.Forms.ToolStripMenuItem listViewMenu_AddShortcut;
         private System.Windows.Forms.ToolStripMenuItem listViewMenu_AddLink;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripMenuItem listViewMenu_ChangeBG;
+        private System.Windows.Forms.OpenFileDialog bgSelectDialog;
     }
 }

@@ -30,6 +30,10 @@ namespace RCClient.UI.Components {
                 tab.content.Width = Width;
                 tab.content.Height = Height - tab.content.Top;
 
+                tab.content.BackColorChanged += (sender, e) => {
+                    Invalidate();
+                };
+
                 Controls.Add(tab.content);
             }
 
@@ -75,6 +79,8 @@ namespace RCClient.UI.Components {
             if (tabs.Count > 0) {
                 var x = tabHeadingPadding;
                 foreach (var tab in tabs) {
+                    if (!tab.visible) continue;
+
                     if (tab.isSelected) {
                         activeTab = new Bitmap((int) e.Graphics.VisibleClipBounds.Width, (int) e.Graphics.VisibleClipBounds.Height);
                         var tabGraphics = Graphics.FromImage(activeTab);
@@ -104,10 +110,10 @@ namespace RCClient.UI.Components {
                 textBrush = new SolidBrush(tab.content.ForeColor);
             } else if (hovered == tab) {
                 tabBG = new SolidBrush(Color.FromArgb(250, 250, 250));
-                textBrush = new SolidBrush(tab.content.ForeColor);
+                textBrush = new SolidBrush(ForeColor);
             } else {
                 tabBG = new SolidBrush(Color.FromArgb(250, 250, 250));
-                textBrush = new SolidBrush(Color.FromArgb(200, tab.content.ForeColor));
+                textBrush = new SolidBrush(Color.FromArgb(200, ForeColor));
             }
 
             var bgPath = new GraphicsPath();
@@ -199,5 +205,13 @@ namespace RCClient.UI.Components {
 
         internal int lastX;
         internal int lastWidth;
+        private bool _visible = true;
+        public bool visible {
+            get { return _visible; }
+            set {
+                _visible = value;
+                if (container != null) container.Invalidate();
+            }
+        }
     }
 }

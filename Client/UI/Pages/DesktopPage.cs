@@ -17,6 +17,7 @@ namespace RCClient.UI.Pages {
 
             listViewMenu_AddShortcut.Image = Icons.GetSystemBitmap("shell32.dll", 263, false);
             listViewMenu_AddLink.Image = Icons.GetSystemBitmap("shell32.dll", 135, false);
+            listViewMenu_ChangeBG.Image = Icons.GetSystemBitmap("imageres.dll", 67, false);
 
             listView.LargeImageList = new ImageList();
             listView.LargeImageList.ImageSize = new Size(32, 32);
@@ -48,18 +49,20 @@ namespace RCClient.UI.Pages {
             pbox.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
+        private Bitmap wallpaper = Resources.wallpaper;
         private void CustomBorderForm_Load (object sender, EventArgs e) {
-            FillPictureBox(listView, Resources.wallpaper);
+            FillPictureBox(listView, wallpaper);
         }
 
         private void CustomBorderForm_ResizeEnd (object sender, EventArgs e) {
-            FillPictureBox(listView, Resources.wallpaper);
+            FillPictureBox(listView, wallpaper);
             foreach (DesktopItem item in listView.Items)
                 PlaceByGrid(item);
         }
 
         private ListViewItem heldDownItem;
         private Point heldDownPoint;
+        private Point heldMousePoint;
         private void listView1_MouseDown (object sender, MouseEventArgs e) {
             heldDownItem = listView.GetItemAt(e.X, e.Y);
             if (heldDownItem != null) {
@@ -74,6 +77,7 @@ namespace RCClient.UI.Pages {
                 listView.BeginUpdate();
                 heldDownItem.Position = new Point(e.Location.X - heldDownPoint.X, e.Location.Y - heldDownPoint.Y);
                 listView.EndUpdate();
+                heldMousePoint = e.Location;
             }
         }
 
@@ -110,19 +114,19 @@ namespace RCClient.UI.Pages {
             int x, y;
             switch (item.alignment) {
                 case ContentAlignment.TopLeft:
-                    x = (LIST_PADDING + ITEM_SIZE) * item.xGridOffset;
-                    y = (LIST_PADDING + ITEM_SIZE) * item.yGridOffset;
+                    x = (LIST_PADDING + ITEM_SIZE) * item.xGridOffset + LIST_PADDING;
+                    y = (LIST_PADDING + ITEM_SIZE) * item.yGridOffset + LIST_PADDING;
                     break;
                 case ContentAlignment.TopRight:
                     x = listView.Width + (LIST_PADDING + ITEM_SIZE) * item.xGridOffset;
-                    y = (LIST_PADDING + ITEM_SIZE) * item.yGridOffset;
+                    y = (LIST_PADDING + ITEM_SIZE) * item.yGridOffset + LIST_PADDING;
                     break;
                 case ContentAlignment.BottomRight:
                     x = listView.Width + (LIST_PADDING + ITEM_SIZE) * item.xGridOffset;
                     y = listView.Height + (LIST_PADDING + ITEM_SIZE) * item.yGridOffset;
                     break;
                 case ContentAlignment.BottomLeft:
-                    x = (LIST_PADDING + ITEM_SIZE) * item.xGridOffset;
+                    x = (LIST_PADDING + ITEM_SIZE) * item.xGridOffset + LIST_PADDING;
                     y = listView.Height + (LIST_PADDING + ITEM_SIZE) * item.yGridOffset;
                     break;
                 default:
@@ -141,6 +145,7 @@ namespace RCClient.UI.Pages {
 
         private void listView1_MouseUp (object sender, MouseEventArgs e) {
             if (heldDownItem != null) {
+                heldDownItem.Position = heldMousePoint;
                 CalcGridAligment((DesktopItem) heldDownItem);
                 heldDownItem = null;
             }
@@ -157,7 +162,11 @@ namespace RCClient.UI.Pages {
                 return;
 
             listView.BeginUpdate();
-            var item = new DesktopItem { Text = result.value.name };
+            listView.LargeImageList.Images.Add(result.value.icon);
+            var item = new DesktopItem {
+                Text = result.value.name,
+                ImageIndex = listView.LargeImageList.Images.Count - 1
+            };
             listView.Items.Add(item);
 
             item.Position = heldDownPoint;
@@ -180,6 +189,14 @@ namespace RCClient.UI.Pages {
             item.Position = heldDownPoint;
             CalcGridAligment(item);
             listView.EndUpdate();
+        }
+
+        private void ChangeBG (object sender, EventArgs e) {
+            if (bgSelectDialog.ShowDialog() == DialogResult.OK) {
+                wallpaper = new Bitmap(bgSelectDialog.FileName);
+                FillPictureBox(listView, wallpaper);
+                BackColor = ((Bitmap) listView.BackgroundImage).GetPixel(25, 0);
+            }
         }
     }
 

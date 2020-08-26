@@ -23,9 +23,9 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent () {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewShortcut));
             this.cancelBtn = new System.Windows.Forms.Button();
             this.createBtn = new System.Windows.Forms.Button();
-            this.fileIcon = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pathInput = new System.Windows.Forms.TextBox();
@@ -34,12 +34,11 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.nameInput = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.openFileBtn = new System.Windows.Forms.PictureBox();
-            this.openFolderBtn = new System.Windows.Forms.PictureBox();
             this.openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.fileIcon = new System.Windows.Forms.PictureBox();
+            this.openFileBtn = new RCClient.UI.Components.ImgButton();
+            this.openFolderBtn = new RCClient.UI.Components.ImgButton();
             ((System.ComponentModel.ISupportInitialize)(this.fileIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.openFileBtn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.openFolderBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelBtn
@@ -64,15 +63,6 @@
             this.createBtn.Text = "Создать";
             this.createBtn.UseVisualStyleBackColor = true;
             this.createBtn.Click += new System.EventHandler(this.Submit);
-            // 
-            // fileIcon
-            // 
-            this.fileIcon.Location = new System.Drawing.Point(12, 14);
-            this.fileIcon.Name = "fileIcon";
-            this.fileIcon.Size = new System.Drawing.Size(32, 32);
-            this.fileIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.fileIcon.TabIndex = 2;
-            this.fileIcon.TabStop = false;
             // 
             // label1
             // 
@@ -100,7 +90,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pathInput.Location = new System.Drawing.Point(54, 28);
             this.pathInput.Name = "pathInput";
-            this.pathInput.Size = new System.Drawing.Size(269, 20);
+            this.pathInput.Size = new System.Drawing.Size(272, 20);
             this.pathInput.TabIndex = 6;
             this.pathInput.TextChanged += new System.EventHandler(this.ValidateForm);
             // 
@@ -148,33 +138,32 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Имя ярлыка:";
             // 
+            // fileIcon
+            // 
+            this.fileIcon.Location = new System.Drawing.Point(12, 14);
+            this.fileIcon.Name = "fileIcon";
+            this.fileIcon.Size = new System.Drawing.Size(32, 32);
+            this.fileIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.fileIcon.TabIndex = 2;
+            this.fileIcon.TabStop = false;
+            // 
             // openFileBtn
             // 
-            this.openFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openFileBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.openFileBtn.Location = new System.Drawing.Point(329, 28);
+            this.openFileBtn.image = ((System.Drawing.Image)(resources.GetObject("openFileBtn.image")));
+            this.openFileBtn.Location = new System.Drawing.Point(332, 28);
             this.openFileBtn.Name = "openFileBtn";
             this.openFileBtn.Size = new System.Drawing.Size(16, 20);
-            this.openFileBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.openFileBtn.TabIndex = 11;
-            this.openFileBtn.TabStop = false;
+            this.openFileBtn.TabIndex = 13;
             this.openFileBtn.Click += new System.EventHandler(this.OpenFile);
-            this.openFileBtn.MouseEnter += new System.EventHandler(this.ImgButtonEnter);
-            this.openFileBtn.MouseLeave += new System.EventHandler(this.ImgButtonLeave);
             // 
             // openFolderBtn
             // 
-            this.openFolderBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openFolderBtn.BackColor = System.Drawing.SystemColors.Control;
-            this.openFolderBtn.Location = new System.Drawing.Point(351, 28);
+            this.openFolderBtn.image = ((System.Drawing.Image)(resources.GetObject("openFolderBtn.image")));
+            this.openFolderBtn.Location = new System.Drawing.Point(354, 27);
             this.openFolderBtn.Name = "openFolderBtn";
             this.openFolderBtn.Size = new System.Drawing.Size(16, 20);
-            this.openFolderBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.openFolderBtn.TabIndex = 12;
-            this.openFolderBtn.TabStop = false;
+            this.openFolderBtn.TabIndex = 14;
             this.openFolderBtn.Click += new System.EventHandler(this.OpenFolder);
-            this.openFolderBtn.MouseEnter += new System.EventHandler(this.ImgButtonEnter);
-            this.openFolderBtn.MouseLeave += new System.EventHandler(this.ImgButtonLeave);
             // 
             // NewShortcut
             // 
@@ -199,8 +188,6 @@
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.onDragEnd);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.onDragStart);
             ((System.ComponentModel.ISupportInitialize)(this.fileIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.openFileBtn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.openFolderBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,8 +206,8 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TextBox nameInput;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.PictureBox openFileBtn;
-        private System.Windows.Forms.PictureBox openFolderBtn;
         private System.Windows.Forms.FolderBrowserDialog openFolderDialog;
+        private Components.ImgButton openFileBtn;
+        private Components.ImgButton openFolderBtn;
     }
 }
