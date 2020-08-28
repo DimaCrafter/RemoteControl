@@ -1,4 +1,5 @@
 ﻿using Common;
+using RCClient.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -41,9 +42,9 @@ namespace RCClient {
             var taskSource = new TaskCompletionSource<Device>();
             new Thread(new ThreadStart(() => {
                 var client = new TcpClient();
-                var connection = client.BeginConnect(ip, Settings.port, null, null);
+                var connection = client.BeginConnect(ip, Settings.data.port, null, null);
 
-                if (!connection.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(isFast ? Settings.fastTimeout : Settings.normalTimeout))) {
+                if (!connection.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(isFast ? Settings.data.fastTimeout : Settings.data.normalTimeout))) {
                     client.Close();
                     taskSource.SetException(new TimeoutException("Connection timed out"));
                     return;
@@ -142,7 +143,7 @@ namespace RCClient {
         }
     }
 
-    class DeviceItem : SerializableStruct<DeviceItem> {
+    public class DeviceItem : SerializableStruct<DeviceItem> {
         public string mac;
         public string name;
         public string ip;

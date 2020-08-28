@@ -43,6 +43,7 @@
             this.statusLabel = new System.Windows.Forms.Label();
             this.statusImg = new System.Windows.Forms.PictureBox();
             this.templatesBtn = new System.Windows.Forms.Button();
+            this.settingsBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.statusImg)).BeginInit();
             this.SuspendLayout();
             // 
@@ -245,10 +246,22 @@
             this.templatesBtn.UseVisualStyleBackColor = true;
             this.templatesBtn.Click += new System.EventHandler(this.OpenTemplates);
             // 
+            // settingsBtn
+            // 
+            this.settingsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.settingsBtn.Location = new System.Drawing.Point(6, 90);
+            this.settingsBtn.Name = "settingsBtn";
+            this.settingsBtn.Size = new System.Drawing.Size(165, 23);
+            this.settingsBtn.TabIndex = 39;
+            this.settingsBtn.Text = "Параметры";
+            this.settingsBtn.UseVisualStyleBackColor = true;
+            this.settingsBtn.Click += new System.EventHandler(this.OpenSettings);
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.settingsBtn);
             this.Controls.Add(this.templatesBtn);
             this.Controls.Add(this.deviceRAMLabel);
             this.Controls.Add(this.discoverBtn);
@@ -298,5 +311,6 @@
         private System.Windows.Forms.PictureBox statusImg;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Button templatesBtn;
+        private System.Windows.Forms.Button settingsBtn;
     }
 }

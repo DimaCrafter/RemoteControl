@@ -80,7 +80,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView.AutoArrange = false;
-            this.listView.BackgroundImage = global::RCClient.Properties.Resources.wallpaper;
+            this.listView.BackgroundImage = RCClient.Properties.Resources.wallpaper;
             this.listView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView.CheckBoxes = true;
             this.listView.ContextMenuStrip = this.listItemMenu;

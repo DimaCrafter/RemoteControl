@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using RCClient.UI.Forms;
 
 namespace RCClient.UI.Pages {
     public partial class Dashboard : UserControl {
@@ -28,6 +29,7 @@ namespace RCClient.UI.Pages {
             logsBtn.Image = Icons.GetSystemBitmap("mmc.exe", 0, false);
             connectBtn.Image = Icons.GetSystemBitmap("netcenter.dll", 1, false);
             templatesBtn.Image = Icons.GetSystemBitmap("shell32.dll", 165, false);
+            settingsBtn.Image = Icons.GetSystemBitmap("imageres.dll", 109, false);
         }
 
         private async void DiscoverDevices (object sender = null, EventArgs e = null) {
@@ -120,6 +122,10 @@ namespace RCClient.UI.Pages {
         private void OpenTemplates (object sender, EventArgs e) {
             var form = new TemplatesForm();
             form.Show();
+        }
+
+        private void OpenSettings (object sender, EventArgs e) {
+            Settings.Open(FindForm());
         }
     }
 }
