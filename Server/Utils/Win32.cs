@@ -1,10 +1,16 @@
-﻿using System;
+﻿using Common;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 
 namespace RCServer.Utils {
     internal static class Win32 {
-        public const uint WM_KEYDOWN = 0x0100;
+        public const uint WM_KEYDOWN = 0x100;
+        public const uint WM_CLOSE = 0x10;
 
         public const int VK_F5 = 0x74;
 
@@ -245,5 +251,43 @@ namespace RCServer.Utils {
 
         [DllImport("user32.dll")]
         public static extern bool PostMessage (IntPtr hWnd, uint Msg, int wParam, int lParam);
+
+        // My utils for WMI
+        public static string GetProcessArgs (Process process) {
+            using var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id);
+            using var objects = searcher.Get();
+            foreach (var obj in objects) {
+                return obj["CommandLine"].ToString();
+            }
+
+            return null;
+        }
+
+        public static DeviceInfo GetDeviceInfo () {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            var result = new DeviceInfo();
+            var osInfo = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get();
+            foreach (var item in osInfo) {
+                result.name = item["CSName"].ToString();
+                result.os = item["Caption"] + " " + item["OSArchitecture"];
+                result.ram = (int) Math.Ceiling(double.Parse(item["TotalVisibleMemorySize"].ToString()) / 1024 / 1024);
+            }
+
+            var processorInfo = new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get();
+            foreach (var item in processorInfo) {
+                result.cpuName = item["Name"].ToString();
+                result.cpuCores = int.Parse(item["NumberOfCores"].ToString());
+            }
+
+            var displayInfo = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController").Get();
+            foreach (var item in displayInfo) {
+                result.videocard = item["Caption"].ToString();
+                result.screenWidth = int.Parse(item["CurrentHorizontalResolution"].ToString());
+                result.screenHeight = int.Parse(item["CurrentVerticalResolution"].ToString());
+                result.bpp = int.Parse(item["CurrentBitsPerPixel"].ToString());
+            }
+
+            return result;
+        }
     }
 }
