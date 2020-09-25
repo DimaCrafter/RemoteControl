@@ -61,7 +61,6 @@
             this.Controls.Add(this.textarea);
             this.Name = "Logs";
             this.Text = "Логи";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onClose);
             this.Load += new System.EventHandler(this.onLoad);
             this.ResumeLayout(false);
             this.PerformLayout();

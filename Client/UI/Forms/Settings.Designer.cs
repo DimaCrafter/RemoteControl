@@ -35,6 +35,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -49,7 +51,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(76, 216);
+            this.button1.Location = new System.Drawing.Point(76, 256);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -60,7 +62,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(157, 216);
+            this.button2.Location = new System.Drawing.Point(157, 256);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -72,7 +74,7 @@
             // 
             this.button3.Location = new System.Drawing.Point(16, 166);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(212, 23);
+            this.button3.Size = new System.Drawing.Size(216, 23);
             this.button3.TabIndex = 3;
             this.button3.Text = "Очистить список устройств";
             this.button3.UseVisualStyleBackColor = true;
@@ -147,11 +149,33 @@
             this.label6.TabIndex = 11;
             this.label6.Text = "Утилиты:";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(16, 195);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(216, 23);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "Очистить сценарии";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(16, 224);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(216, 23);
+            this.button5.TabIndex = 13;
+            this.button5.Text = "Удалить все шаблоны";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 251);
+            this.ClientSize = new System.Drawing.Size(244, 291);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -187,5 +211,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }

@@ -23,38 +23,38 @@
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent () {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBox
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::RCClient.Properties.Resources.progress;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(20, 20);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
-            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
+            this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox.Image = global::RCClient.Properties.Resources.progress;
+            this.pictureBox.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(20, 20);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.Click += new System.EventHandler(this.onClick);
+            this.pictureBox.MouseEnter += new System.EventHandler(this.onMouseEnter);
+            this.pictureBox.MouseLeave += new System.EventHandler(this.onMouseLeave);
             // 
             // ImgButton
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictureBox);
             this.Name = "ImgButton";
             this.Size = new System.Drawing.Size(20, 20);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }

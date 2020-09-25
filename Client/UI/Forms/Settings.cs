@@ -14,7 +14,13 @@ namespace RCClient.UI.Forms {
         public static void LoadInit () {
             if (File.Exists(SETTINGS_FILE)) {
                 var file = File.OpenRead(SETTINGS_FILE);
-                data = SettingsStruct.Deserialize(file);
+                try {
+                    data = SettingsStruct.Deserialize(file);
+                } catch (Exception) {
+                    MessageBox.Show("Неверный формат конфигурационного файла", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+
                 file.Close();
             } else {
                 data = new SettingsStruct();
@@ -80,6 +86,16 @@ namespace RCClient.UI.Forms {
             data.devices.Clear();
             MessageBox.Show("Список устройств был успешно очищен.");
         }
+
+        private void button4_Click (object sender, EventArgs e) {
+            data.scripts.Clear();
+            MessageBox.Show("Список сценариев был успешно очищен.");
+        }
+
+        private void button5_Click (object sender, EventArgs e) {
+            data.templates.Clear();
+            MessageBox.Show("Все шаблоны были успешно удалены.");
+        }
     }
 
     public class SettingsStruct : SerializableStruct<SettingsStruct> {
@@ -87,5 +103,7 @@ namespace RCClient.UI.Forms {
         public int fastTimeout = 65;
         public int normalTimeout = 2500;
         public List<DeviceItem> devices = new List<DeviceItem>();
+        public List<DeviceTemplate> templates = new List<DeviceTemplate>();
+        public List<ExecScript> scripts = new List<ExecScript>();
     }
 }

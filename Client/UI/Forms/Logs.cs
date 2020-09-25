@@ -15,10 +15,6 @@ namespace RCClient {
             instance.textarea.AppendText(history);
         }
 
-        private void onClose (object sender, FormClosingEventArgs e) {
-            instance = null;
-        }
-
         public static void OpenForm (Form target = null) {
             if (instance == null) new Logs();
             instance.Show();
@@ -32,6 +28,7 @@ namespace RCClient {
                 instance.FormClosing += (sender, e) => {
                     target.Resize -= instance.DoMagnet;
                     target.Move -= instance.DoMagnet;
+                    instance = null;
                 };
             }
         }

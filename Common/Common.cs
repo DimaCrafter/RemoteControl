@@ -5,9 +5,10 @@ using System.IO;
 using System.Reflection;
 
 namespace Common {
-    public enum PacketType {
+    public enum PacketType : byte {
         Info,
         Auth,
+        ExecuteScript,
         RequestVNC
     }
 
@@ -24,197 +25,258 @@ namespace Common {
     }
 
     public abstract class SerializableStruct<T> where T: SerializableStruct<T> {
-        private delegate void SerializerStep (ref object obj, BinaryWriter writer);
-        private static List<SerializerStep> serializerSteps;
-        private delegate void DeserializerStep (ref object obj, BinaryReader reader);
-        private static List<DeserializerStep> deserializerSteps;
+        private delegate void Writer (BinaryWriter writer, object value);
+        private delegate object Reader (BinaryReader reader);
 
         static SerializableStruct () {
-            serializerSteps = new List<SerializerStep>();
-            deserializerSteps = new List<DeserializerStep>();
-            ParseComplicated(typeof(T));
-        }
-
-        private static void ParseComplicated (Type type, FieldInfo baseField = null) {
-            if (baseField == null) {
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    obj = Activator.CreateInstance(type);
-                });
-
-                foreach (var field in type.GetFields()) {
-                    ParseSimple(field);
+            var type = typeof(T);
+            foreach (var field in type.GetFields()) {
+                var step = GetStep(field.FieldType);
+                if (step == null) {
+                    throw new Exception($"Field {field.Name} ({field.FieldType}) of {type.Name} not supported");
                 }
 
-                return;
-            } else if (type.GetInterface("IList") != null) {
-                var genericType = type.GetGenericArguments()[0];
-
-                Getter getter = (ref object obj, BinaryWriter writer, Action<object> cb) => {
-                    var list = (IList) baseField.GetValue(obj);
-                    writer.Write(list.Count);
-
-                    foreach (var entry in list) cb(entry);
+                SerializeBaked += (object obj, BinaryWriter writer) => {
+                    step.Write(writer, field.GetValue(obj));
                 };
 
-                Setter setter = (ref object obj, BinaryReader reader, Func<object> cb) => {
-                    var list = (IList) Activator.CreateInstance(type);
-                    
-                    var length = reader.ReadInt32();
-                    for (var i = 0; i < length; i++) list.Add(cb());
-
-                    baseField.SetValue(obj, list);
+                DeserializeBaked += (object obj, BinaryReader reader) => {
+                    field.SetValue(obj, step.Read(reader));
                 };
-
-                ParseSimple(genericType, getter, setter);
-                return;
             }
-
-            throw new Exception("Type of " + baseField.Name + " in " + type.Name + " not supported");
         }
 
-        private delegate void Getter (ref object obj, BinaryWriter writer, Action<object> cb);
-        private delegate void Setter (ref object obj, BinaryReader reader, Func<object> cb);
-        private static bool ParseSimple (Type type, Getter getter, Setter setter) {
-            if (type == typeof(string)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((string) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadString());
-                });
-            } else if (type == typeof(float)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((float) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadSingle());
-                });
-            } else if (type == typeof(ulong)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((ulong) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadUInt64());
-                });
-            } else if (type == typeof(long)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((long) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadInt64());
-                });
-            } else if (type == typeof(uint)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((uint) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadUInt32());
-                });
-            } else if (type == typeof(int)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((int) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadInt32());
-                });
-            } else if (type == typeof(ushort)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((ushort) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadUInt16());
-                });
-            } else if (type == typeof(short)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((short) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadInt16());
-                });
-            } else if (type == typeof(double)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((double) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadDouble());
-                });
-            } else if (type == typeof(char)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((char) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadChar());
-                });
-            } else if (type == typeof(sbyte)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((sbyte) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadSByte());
-                });
-            } else if (type == typeof(bool)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((bool) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadBoolean());
-                });
-            } else if (type == typeof(decimal)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((decimal) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadDecimal());
-                });
-            } else if (type.BaseType == typeof(Enum)) {
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    getter(ref obj, writer, value => writer.Write((int) value));
-                });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => reader.ReadInt32());
-                });
-            } else if (type.BaseType.Name == "SerializableStruct`1") {
-                var serializer = type.GetMethod("Serialize", new Type[] { typeof(BinaryWriter) });
-                serializerSteps.Add((ref object obj, BinaryWriter writer) => {
-                    var unref = obj;
-                    getter(ref obj, writer, value => serializer.Invoke(value, new object[] { writer }));
-                });
-
-                var deserializer = type.BaseType.GetMethod("Deserialize", new Type[] { typeof(BinaryReader) });
-                deserializerSteps.Add((ref object obj, BinaryReader reader) => {
-                    setter(ref obj, reader, () => deserializer.Invoke(null, new object[] { reader }));
-                });
-            } else {
-                return false;
-            }
-
-            return true;
-        }
-        private static void ParseSimple (FieldInfo field) {
-            var parsed = ParseSimple(
-                field.FieldType,
-                (ref object obj, BinaryWriter writer, Action<object> cb) => cb(field.GetValue(obj)),
-                (ref object obj, BinaryReader reader, Func<object> cb) => field.SetValue(obj, cb())
-            );
-
-            if (!parsed) ParseComplicated(field.FieldType, field);
-        }
-
+        private static Action<object, BinaryWriter> SerializeBaked;
         public void Serialize (Stream stream) {
             Serialize(new BinaryWriter(stream));
         }
         public void Serialize (BinaryWriter writer) {
-            object serializable = this;
-            foreach (var step in serializerSteps) step(ref serializable, writer);
+            SerializeBaked(this, writer);
         }
 
+        private static Action<object, BinaryReader> DeserializeBaked;
         public static T Deserialize (Stream stream) {
             return Deserialize(new BinaryReader(stream));
         }
         public static T Deserialize (BinaryReader reader) {
-            object deserializable = null;
-            foreach (var step in deserializerSteps) step(ref deserializable, reader);
-            return (T) deserializable;
+            var instance = Activator.CreateInstance<T>();
+            DeserializeBaked(instance, reader);
+            return instance;
+        }
+
+        private class Step {
+            public Reader Read;
+            public Writer Write;
+        }
+
+        private static Step GetStep (Type type) {
+            // Primitive types
+            if (type == typeof(string)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((string) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadString();
+                    }
+                };
+            } else if (type == typeof(float)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((float) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadSingle();
+                    }
+                };
+            } else if (type == typeof(ulong)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((ulong) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadUInt64();
+                    }
+                };
+            } else if (type == typeof(long)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((long) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadInt64();
+                    }
+                };
+            } else if (type == typeof(uint)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((uint) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadUInt32();
+                    }
+                };
+            } else if (type == typeof(int)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((int) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadInt32();
+                    }
+                };
+            } else if (type == typeof(ushort)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((ushort) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadUInt16();
+                    }
+                };
+            } else if (type == typeof(short)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((short) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadInt16();
+                    }
+                };
+            } else if (type == typeof(double)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((double) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadDouble();
+                    }
+                };
+            } else if (type == typeof(char)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((char) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadChar();
+                    }
+                };
+            } else if (type == typeof(sbyte)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((sbyte) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadSByte();
+                    }
+                };
+            } else if (type == typeof(byte)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((byte) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadByte();
+                    }
+                };
+            } else if (type == typeof(bool)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((bool) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadBoolean();
+                    }
+                };
+            } else if (type == typeof(decimal)) {
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        writer.Write((decimal) value);
+                    },
+                    Read = (BinaryReader reader) => {
+                        return reader.ReadDecimal();
+                    }
+                };
+            } else if (type.BaseType == typeof(Enum)) {
+                var baseType = Enum.GetUnderlyingType(type);
+                var step = GetStep(baseType);
+                if (step == null) {
+                    throw new Exception($"Enum with type {baseType.Name} not supported");
+                } else {
+                    return step;
+                }
+            // Complicated types
+            } else if (type.BaseType.Name == "SerializableStruct`1") {
+                var serializer = type.GetMethod("Serialize", new Type[] { typeof(BinaryWriter) });
+                var deserializer = type.BaseType.GetMethod("Deserialize", new Type[] { typeof(BinaryReader) });
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        serializer.Invoke(value, new object[] { writer });
+                    },
+                    Read = (BinaryReader reader) => {
+                        return deserializer.Invoke(null, new object[] { reader });
+                    }
+                };
+            } else if (type.GetInterface("IList") != null) {
+                var itemType = type.GetGenericArguments()[0];
+                var itemStep = GetStep(itemType);
+                if (itemStep == null) {
+                    throw new Exception($"List of {itemType.Name} isn't supported");
+                }
+
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        var list = (IList) value;
+                        writer.Write(list.Count);
+                        foreach (var item in list) {
+                            itemStep.Write(writer, item);
+                        }
+                    },
+                    Read = (BinaryReader reader) => {
+                        var list = (IList) Activator.CreateInstance(type);
+                        var count = reader.ReadInt32();
+                        for (var i = 0; i < count; i++) {
+                            list.Add(itemStep.Read(reader));
+                        }
+
+                        return list;
+                    }
+                };
+            } else if (type.GetInterface("IDictionary") != null) {
+                var entryTypes = type.GetGenericArguments();
+
+                var keyStep = GetStep(entryTypes[0]);
+                if (keyStep == null) {
+                    throw new Exception(entryTypes[0].Name + " as key type in dictionary isn't supported");
+                }
+
+                var valueStep = GetStep(entryTypes[1]);
+                if (valueStep == null) {
+                    throw new Exception(entryTypes[1].Name + " as value type in dictionary isn't supported");
+                }
+
+                return new Step {
+                    Write = (BinaryWriter writer, object value) => {
+                        var dictionary = (IDictionary) value;
+                        writer.Write(dictionary.Count);
+                        foreach (DictionaryEntry entry in dictionary) {
+                            keyStep.Write(writer, entry.Key);
+                            valueStep.Write(writer, entry.Value);
+                        }
+                    },
+                    Read = (BinaryReader reader) => {
+                        var dictionary = (IDictionary) Activator.CreateInstance(type);
+                        var count = reader.ReadInt32();
+                        for (var i = 0; i < count; i++) {
+                            dictionary.Add(keyStep.Read(reader), valueStep.Read(reader));
+                        }
+
+                        return dictionary;
+                    }
+                };
+            }
+
+            return null;
         }
     }
 
@@ -231,5 +293,19 @@ namespace Common {
 
     public enum ShortcutAlignment {
         TopLeft, TopRight, BottomRight, BottomLeft
+    }
+
+    public class ExecScript : SerializableStruct<ExecScript> {
+        public string name;
+        public List<Dictionary<string, string>> steps = new List<Dictionary<string, string>>();
+    }
+
+    public class ExecState : SerializableStruct<ExecState> {
+        // 0-100      Процент выполнения
+        // 250 (0xFA) Задача запущена
+        // 254 (0xFE) Задача выполнена с ошибкой
+        // 255 (0xFF) Все задачи выполнены
+        public byte percent;
+        public string step;
     }
 }

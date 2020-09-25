@@ -75,34 +75,40 @@ namespace RCClient.UI.Components {
             tabBorder = new Pen(tabHeadingBorder, 1);
             e.Graphics.FillRectangle(new SolidBrush(tabHeadingColor), 0, 0, (int) e.Graphics.VisibleClipBounds.Width, y + TAB_HEIGHT);
 
-            Image activeTab = null;
-            if (tabs.Count > 0) {
-                var x = tabHeadingPadding;
-                foreach (var tab in tabs) {
-                    if (!tab.visible) continue;
+            var prerendered = new List<Image>();
+            var x = tabHeadingPadding;
+            foreach (var tab in tabs) {
+                if (!tab.visible) continue;
 
-                    if (tab.isSelected) {
-                        activeTab = new Bitmap((int) e.Graphics.VisibleClipBounds.Width, (int) e.Graphics.VisibleClipBounds.Height);
-                        var tabGraphics = Graphics.FromImage(activeTab);
-                        tabGraphics.SmoothingMode = SmoothingMode.AntiAlias;
+                var layer = new Bitmap((int) e.Graphics.VisibleClipBounds.Width, (int) e.Graphics.VisibleClipBounds.Height);
+                var tabGraphics = Graphics.FromImage(layer);
+                tabGraphics.SmoothingMode = SmoothingMode.AntiAlias;
+                if (tab.isSelected) {
+                    // Rendering border line here because active tab is upper layer
+                    tabGraphics.DrawLine(tabBorder, 0, y + TAB_HEIGHT, (int) e.Graphics.VisibleClipBounds.Width, y + TAB_HEIGHT);
 
-                        x += RenderTabItem(tabGraphics, x, y, tab);
-                    } else {
-                        x += RenderTabItem(e.Graphics, x, y, tab);
-                    }
+                    x += RenderTabItem(tabGraphics, x, y, tab);
+                    prerendered.Add(layer);
+                } else {
+                    x += RenderTabItem(tabGraphics, x, y, tab);
+                    prerendered.Insert(0, layer);
                 }
             }
 
-            e.Graphics.DrawLine(tabBorder, 0, y + TAB_HEIGHT, (int) e.Graphics.VisibleClipBounds.Width, y + TAB_HEIGHT);
-            if (activeTab != null) e.Graphics.DrawImage(activeTab, 0, 0);
+            foreach (var layer in prerendered) {
+                e.Graphics.DrawImage(layer, 0, 0);
+            }
         }
 
         private int RenderTabItem (Graphics graphics, int x, int y, Tab tab) {
-            // TODO: Переделать на graphics origin
+            // Current X for rendering with offset
+            var cx = x;
+
+            // Calculating tab width
             var textSize = graphics.MeasureString(tab.name, Font);
-            var width = textSize.Width;
-            if (tab.isClosable) width += 20;
-            else width += 5;
+            var width = (int) textSize.Width + 14;
+            if (tab.isClosable) width += 16;
+            if (tab.icon != null) width += 16 + 5;
 
             SolidBrush tabBG, textBrush;
             if (tab.isSelected) {
@@ -116,35 +122,60 @@ namespace RCClient.UI.Components {
                 textBrush = new SolidBrush(Color.FromArgb(200, ForeColor));
             }
 
+            // Tab shape
             var bgPath = new GraphicsPath();
-            bgPath.AddBezier(x, y + TAB_HEIGHT + 1, x, y + TAB_HEIGHT + 1, x + 3, y, x + 5, y);
-            bgPath.AddLine(x + 5, y, x + 5 + width, y);
-            bgPath.AddBezier(x + 5 + width, y, x + 12 + width, y, x + 12 + width, y + TAB_HEIGHT + 1, x + 20 + width, y + TAB_HEIGHT + 1);
+            bgPath.AddBezier(
+                cx,      y + TAB_HEIGHT + 1,
+                cx +  5, y + TAB_HEIGHT + 1,
+                cx +  5, y,
+                cx + 12, y
+            );
+            // ??? Why offset 2 with same curve!?
+            bgPath.AddBezier(
+                cx - 2 + width, y,
+                cx + 5 + width, y,
+                cx + 5 + width, y + TAB_HEIGHT + 1,
+                cx + 14 + width, y + TAB_HEIGHT + 1
+            );
             bgPath.CloseFigure();
             graphics.FillPath(tabBG, bgPath);
             graphics.DrawPath(tabBorder, bgPath);
 
-            if (tab.isClosable) {
-                var closeIconY = y + (TAB_HEIGHT - 6) / 2;
-                var closeIconX = x + width + 1;
+            // Padding before tab name
+            cx += 15;
 
+            // Drawing tab icon with padding tab's name
+            if (tab.icon != null) {
+                graphics.DrawIcon(tab.icon, new Rectangle(cx, y + (TAB_HEIGHT - 16) / 2 + 1, 16, 16));
+                cx += 20;
+            }
+
+            graphics.DrawString(tab.name, Font, textBrush, cx, y + (TAB_HEIGHT - textSize.Height) / 2);
+            cx += (int) textSize.Width + 5;
+
+            // Drawing close icon
+            if (tab.isClosable) {
+                // Margin for rendering around middle point
+                cx += 6;
+
+                var closeIconY = y + (TAB_HEIGHT - 6) / 2;
                 Pen closeIconPen;
                 if (tab == hovered && isCloseHovered) {
-                    graphics.FillEllipse(Brushes.Red, closeIconX - 9, closeIconY - 3, 12, 12);
+                    graphics.FillEllipse(Brushes.Red, cx - 9, closeIconY - 3, 12, 12);
                     closeIconPen = new Pen(Color.White, 1.5f);
                 } else {
                     closeIconPen = new Pen(tabHeadingBorder, 1.5f);
                 }
 
-                graphics.DrawLine(closeIconPen, closeIconX - 6, closeIconY, closeIconX, closeIconY + 6);
-                graphics.DrawLine(closeIconPen, closeIconX, closeIconY, closeIconX - 6, closeIconY + 6);
+                graphics.DrawLine(closeIconPen, cx - 6, closeIconY, cx, closeIconY + 6);
+                graphics.DrawLine(closeIconPen, cx, closeIconY, cx - 6, closeIconY + 6);
             }
 
-            graphics.DrawString(tab.name, Font, textBrush, x + 10, y + (TAB_HEIGHT - textSize.Height) / 2);
-
-            tab.lastWidth = (int) width;
+            tab.lastWidth = width;
             tab.lastX = x;
-            return (int) width + 5;
+
+            // offset between tabs
+            return width - 3;
         }
 
         private bool isCloseHovered = false;

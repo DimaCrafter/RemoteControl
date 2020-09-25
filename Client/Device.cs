@@ -7,11 +7,34 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RCClient {
-    class Device {
+    public class Device {
+        public Device (IPAddress ip) {
+            this.ip = ip;
+            SetTemplate();
+        }
+
+        public string name { get; private set; }
+        public Device (DeviceItem item) {
+            ip = IPAddress.Parse(item.ip);
+            name = item.name;
+            SetTemplate();
+        }
+
+        private void SetTemplate () {
+            foreach (var template in Settings.data.templates) {
+                if (template.devices.Contains(ip.ToString())) {
+                    this.template = template;
+                    break;
+                }
+            }
+        }
+
         public IPAddress ip;
         public DeviceInfo info;
+        public DeviceTemplate template;
 
         private NetworkStream stream;
         private TcpClient client;
@@ -21,15 +44,39 @@ namespace RCClient {
             switch (type) {
                 case PacketType.Info:
                     info = ReadStruct<DeviceInfo>();
+                    name = info.name;
                     break;
             }
 
             onPacket(type);
         }
 
+        public void ExecuteScript (ExecScript script, Action<ExecState> onStateChanged) {
+            stream.WriteByte((byte) PacketType.ExecuteScript);
+            WriteStruct(script);
+
+            Action<PacketType> handler = null;
+            handler = type => {
+                if (type == PacketType.ExecuteScript) {
+                    var state = ReadStruct<ExecState>();
+                    onStateChanged(state);
+
+                    if (state.percent == 0xFF) {
+                        onPacket -= handler;
+                        Disconnect();
+                    }
+                }
+            };
+
+            onPacket += handler;
+        }
+
         // Network methods section =========================================================================
         public T ReadStruct<T> () where T: SerializableStruct<T> {
             return SerializableStruct<T>.Deserialize(stream);
+        }
+        public void WriteStruct<T> (T obj) where T : SerializableStruct<T> {
+            obj.Serialize(stream);
         }
 
         public void Disconnect () {
@@ -38,7 +85,7 @@ namespace RCClient {
 
         /// <exception cref="SocketException"></exception>
         /// <exception cref="TimeoutException"></exception>
-        public static Task<Device> Connect (IPAddress ip, bool isFast = false) {
+        public static Task<Device> Connect (IPAddress ip, bool isFast = false, Device device = null) {
             var taskSource = new TaskCompletionSource<Device>();
             new Thread(new ThreadStart(() => {
                 var client = new TcpClient();
@@ -60,11 +107,10 @@ namespace RCClient {
                 }
 
                 var stream = client.GetStream();
-                var device = new Device {
-                    ip = ip,
-                    client = client,
-                    stream = stream
-                };
+                if (device == null) device = new Device(ip);
+
+                device.client = client;
+                device.stream = stream;
                 taskSource.SetResult(device);
 
                 while (client.Connected) {
@@ -75,7 +121,11 @@ namespace RCClient {
             return taskSource.Task;
         }
 
-        public static Task Discover (Action<Device> onData) {
+        public Task Connect (bool isFast = false) {
+            return Connect(ip, isFast, this);
+        }
+
+        public static Task Discover (List<Device> devices, Action<Device> onData) {
             var tasks = new List<Task>();
             foreach (var intr in NetworkInterface.GetAllNetworkInterfaces()) {
                 if (intr.OperationalStatus != OperationalStatus.Up || intr.Name.ToLower().Contains("loopback")) {
@@ -96,21 +146,32 @@ namespace RCClient {
                 }
 
                 if (mask == null) continue;
-                if (!isDHCP) baseIP = subnet.GatewayAddresses[0]?.Address;
+                if (!isDHCP) {
+                    foreach (var ip in subnet.GatewayAddresses) {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork) {
+                            baseIP = ip.Address;
+                            break;
+                        }
+                    }
+                }
 
                 if (baseIP == null) continue;
                 var network = IPNetwork.Parse(baseIP, mask);
                 Logs.Write($"Поиск устройств в сети {intr.Name} (подсеть {network})");
-                tasks.Add(DiscoverSubnet(network, onData));
+                tasks.Add(DiscoverSubnet(devices, network, onData));
             }
 
             return Task.WhenAll(tasks);
         }
 
-        private static async Task DiscoverSubnet (IPNetwork network, Action<Device> onData) {
+        private static async Task DiscoverSubnet (List<Device> devices, IPNetwork network, Action<Device> onData) {
             var broadcast = network.Broadcast;
             foreach (var ip in network.ListIPAddress()) {
                 if (ip.Equals(broadcast)) continue;
+
+                foreach (var savedDevice in devices) {
+                    if (savedDevice.ip.Equals(ip)) goto continueDiscover;
+                }
 
                 Device device;
                 try {
@@ -124,27 +185,53 @@ namespace RCClient {
                 device.stream.WriteByte((byte) PacketType.Info);
 
                 var taskSource = new TaskCompletionSource<object>();
-                Action<PacketType> handler = null;
-                handler = type => {
+                void handler (PacketType type) {
                     if (type == PacketType.Info) {
                         device.onPacket -= handler;
                         device.Disconnect();
                         taskSource.SetResult(null);
                     }
-                };
+                }
 
                 device.onPacket += handler;
                 await taskSource.Task;
                 device.Disconnect();
                 onData(device);
+
+                continueDiscover:;
             }
 
             Logs.Write("Поиск в сети " + network + " окончен");
         }
+
+        public async Task<bool> FetchInfo () {
+            try {
+                await Connect(true);
+            } catch (SocketException) {
+                return false;
+            } catch (TimeoutException) {
+                return false;
+            }
+
+            stream.WriteByte((byte) PacketType.Info);
+
+            var taskSource = new TaskCompletionSource<object>();
+            Action<PacketType> handler = null;
+            handler = type => {
+                if (type == PacketType.Info) {
+                    onPacket -= handler;
+                    Disconnect();
+                    taskSource.SetResult(null);
+                }
+            };
+
+            onPacket += handler;
+            await taskSource.Task;
+            return true;
+        }
     }
 
     public class DeviceItem : SerializableStruct<DeviceItem> {
-        public string mac;
         public string name;
         public string ip;
     }

@@ -26,8 +26,8 @@ namespace RCClient.UI.Components {
             Close();
         }
 
-        public static Task<ModalResult> Open (Form parent) {
-            var form = Activator.CreateInstance<T>() as Modal<T, V>;
+        public static Task<ModalResult> Open (Form parent, params object[] args) {
+            var form = Activator.CreateInstance(typeof(T), args) as Modal<T, V>;
             form.Show();
             form.Location = new Point(
                 parent.Location.X + (parent.Width - form.Width) / 2,

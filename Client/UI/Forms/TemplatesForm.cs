@@ -1,4 +1,5 @@
 ﻿using RCClient.UI.Components;
+using RCClient.UI.Forms;
 using RCClient.UI.Pages;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace RCClient {
 
             tabs.AddTab(new Tab {
                 name = "Главная",
-                icon = Icons.GetSystemIcon("imageres.dll", -183, false),
                 content = new TemplatesPage(dependentTabs),
+                icon = Icons.GetSystemIcon("shell32.dll", 165, false),
                 isClosable = false
             }, true);
 
@@ -33,13 +34,20 @@ namespace RCClient {
                 tab.visible = false;
                 tabs.AddTab(tab);
             }
+        }
 
-            //tabs.AddTab(new Tab {
-            //    name = "Рабочий стол",
-            //    icon = Icons.GetSystemIcon("imageres.dll", -183, false),
-            //    content = new DesktopPage(),
-            //    isClosable = false
-            //}, true);
+        private void OnClose (object sender, FormClosingEventArgs e) {
+            switch (MessageBox.Show("Сохранить внесённые изменения?", "Сохранение", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)) {
+                case DialogResult.Yes:
+                    Settings.Save();
+                    break;
+                case DialogResult.No:
+                    Settings.LoadInit();
+                    break;
+                case DialogResult.Cancel:
+                    e.Cancel = true;
+                    break;
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace RCClient.UI.Components {
@@ -18,36 +17,26 @@ namespace RCClient.UI.Components {
             }
         }
 
-        private void pictureBox1_MouseEnter (object sender, EventArgs e) {
-            pictureBox1.BackColor = SystemColors.Highlight;
+        private void onMouseEnter (object sender, EventArgs e) {
+           pictureBox.BackColor = SystemColors.Highlight;
         }
 
-        private void pictureBox1_MouseLeave (object sender, EventArgs e) {
-            pictureBox1.BackColor = SystemColors.Control;
+        private void onMouseLeave (object sender, EventArgs e) {
+            pictureBox.BackColor = BackColor;
         }
 
         public new event EventHandler Click = (sender, e) => { };
-        private void pictureBox1_Click (object sender, EventArgs e) {
-            Click(this, e);
+        private void onClick (object sender, EventArgs e) {
+            Click(sender, e);
         }
 
-        protected override unsafe void OnEnabledChanged (EventArgs e = null) {
+        protected override void OnEnabledChanged (EventArgs e = null) {
             if (_img == null) return;
 
-            if (Enabled) pictureBox1.Image = _img;
-            else {
-                var img = (Bitmap) _img.Clone();
-                var imgData = img.LockBits(new Rectangle(Point.Empty, img.Size), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-                for (var y = 0; y < img.Height; y++) {
-                    for (var x = 0; x < img.Width; x++) {
-                        var i = (byte*) imgData.Scan0 + imgData.Stride * y + x * 4;
-                        i[2] = i[1] = i[0] = (byte) ((i[2] + i[1] + i[0]) / 3);
-                    }
-                }
+            if (Enabled) pictureBox.Image = _img;
+            else pictureBox.Image = Utils.GrayscaleImage(_img);
 
-                img.UnlockBits(imgData);
-                pictureBox1.Image = img;
-            }
+            base.OnEnabledChanged(e);
         }
     }
 }

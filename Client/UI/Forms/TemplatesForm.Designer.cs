@@ -43,6 +43,7 @@
             this.Name = "TemplatesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Шаблоны";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClose);
             this.Load += new System.EventHandler(this.OnLoad);
             this.ResumeLayout(false);
 

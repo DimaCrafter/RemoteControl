@@ -41,19 +41,32 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label8 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.statusImg = new System.Windows.Forms.PictureBox();
             this.templatesBtn = new System.Windows.Forms.Button();
             this.settingsBtn = new System.Windows.Forms.Button();
+            this.groupSelect = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.saveDevicesBtn = new System.Windows.Forms.Button();
+            this.syncBtn = new System.Windows.Forms.Button();
+            this.executeBtn = new System.Windows.Forms.Button();
+            this.openScriptsBtn = new System.Windows.Forms.Button();
+            this.statusImg = new System.Windows.Forms.PictureBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.imgButton1 = new RCClient.UI.Components.ImgButton();
             ((System.ComponentModel.ISupportInitialize)(this.statusImg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // deviceRAMLabel
             // 
-            this.deviceRAMLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceRAMLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceRAMLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.deviceRAMLabel.Location = new System.Drawing.Point(581, 260);
+            this.deviceRAMLabel.Location = new System.Drawing.Point(2, 260);
             this.deviceRAMLabel.Name = "deviceRAMLabel";
-            this.deviceRAMLabel.Size = new System.Drawing.Size(199, 18);
+            this.deviceRAMLabel.Size = new System.Drawing.Size(232, 18);
             this.deviceRAMLabel.TabIndex = 37;
             this.deviceRAMLabel.Text = "8 Гб";
             // 
@@ -62,7 +75,7 @@
             this.discoverBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.discoverBtn.Location = new System.Drawing.Point(6, 5);
             this.discoverBtn.Name = "discoverBtn";
-            this.discoverBtn.Size = new System.Drawing.Size(165, 23);
+            this.discoverBtn.Size = new System.Drawing.Size(165, 24);
             this.discoverBtn.TabIndex = 21;
             this.discoverBtn.Text = "Поиск устройств";
             this.discoverBtn.UseVisualStyleBackColor = true;
@@ -70,9 +83,8 @@
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(581, 246);
+            this.label3.Location = new System.Drawing.Point(2, 246);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 36;
@@ -81,9 +93,9 @@
             // logsBtn
             // 
             this.logsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.logsBtn.Location = new System.Drawing.Point(6, 34);
+            this.logsBtn.Location = new System.Drawing.Point(6, 80);
             this.logsBtn.Name = "logsBtn";
-            this.logsBtn.Size = new System.Drawing.Size(165, 23);
+            this.logsBtn.Size = new System.Drawing.Size(165, 24);
             this.logsBtn.TabIndex = 22;
             this.logsBtn.Text = "Показать логи";
             this.logsBtn.UseVisualStyleBackColor = true;
@@ -91,30 +103,31 @@
             // 
             // deviceVideoLabel
             // 
-            this.deviceVideoLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceVideoLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceVideoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.deviceVideoLabel.Location = new System.Drawing.Point(581, 198);
+            this.deviceVideoLabel.Location = new System.Drawing.Point(2, 198);
             this.deviceVideoLabel.Name = "deviceVideoLabel";
-            this.deviceVideoLabel.Size = new System.Drawing.Size(199, 38);
+            this.deviceVideoLabel.Size = new System.Drawing.Size(232, 38);
             this.deviceVideoLabel.TabIndex = 35;
             this.deviceVideoLabel.Text = "Nvidia GT 250 GMS Eco\r\n800x600 32bbp";
             // 
             // connectBtn
             // 
-            this.connectBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.connectBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.connectBtn.Location = new System.Drawing.Point(580, 393);
+            this.connectBtn.Location = new System.Drawing.Point(5, 393);
             this.connectBtn.Name = "connectBtn";
-            this.connectBtn.Size = new System.Drawing.Size(204, 23);
+            this.connectBtn.Size = new System.Drawing.Size(229, 23);
             this.connectBtn.TabIndex = 23;
             this.connectBtn.Text = "Подключиться";
             this.connectBtn.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(581, 184);
+            this.label6.Location = new System.Drawing.Point(2, 184);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(70, 13);
             this.label6.TabIndex = 34;
@@ -122,10 +135,11 @@
             // 
             // deviceIPLabel
             // 
-            this.deviceIPLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceIPLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceIPLabel.AutoSize = true;
             this.deviceIPLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.deviceIPLabel.Location = new System.Drawing.Point(580, 5);
+            this.deviceIPLabel.Location = new System.Drawing.Point(1, 5);
             this.deviceIPLabel.Name = "deviceIPLabel";
             this.deviceIPLabel.Size = new System.Drawing.Size(138, 24);
             this.deviceIPLabel.TabIndex = 24;
@@ -133,19 +147,19 @@
             // 
             // deviceCPULabel
             // 
-            this.deviceCPULabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceCPULabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceCPULabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.deviceCPULabel.Location = new System.Drawing.Point(581, 136);
+            this.deviceCPULabel.Location = new System.Drawing.Point(2, 136);
             this.deviceCPULabel.Name = "deviceCPULabel";
-            this.deviceCPULabel.Size = new System.Drawing.Size(199, 38);
+            this.deviceCPULabel.Size = new System.Drawing.Size(232, 38);
             this.deviceCPULabel.TabIndex = 33;
             this.deviceCPULabel.Text = "Intel Pentium Core 2 Duo\r\n1 ____ x 2 core";
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(581, 39);
+            this.label2.Location = new System.Drawing.Point(2, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(98, 13);
             this.label2.TabIndex = 25;
@@ -153,9 +167,8 @@
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(581, 122);
+            this.label4.Location = new System.Drawing.Point(2, 122);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 13);
             this.label4.TabIndex = 32;
@@ -163,21 +176,23 @@
             // 
             // deviceNameLabel
             // 
-            this.deviceNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceNameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.deviceNameLabel.Location = new System.Drawing.Point(581, 53);
+            this.deviceNameLabel.Location = new System.Drawing.Point(2, 53);
             this.deviceNameLabel.Name = "deviceNameLabel";
-            this.deviceNameLabel.Size = new System.Drawing.Size(199, 18);
+            this.deviceNameLabel.Size = new System.Drawing.Size(232, 18);
             this.deviceNameLabel.TabIndex = 26;
             this.deviceNameLabel.Text = "Обычной имя";
             // 
             // deviceOSLabel
             // 
-            this.deviceOSLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceOSLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceOSLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
-            this.deviceOSLabel.Location = new System.Drawing.Point(581, 95);
+            this.deviceOSLabel.Location = new System.Drawing.Point(2, 95);
             this.deviceOSLabel.Name = "deviceOSLabel";
-            this.deviceOSLabel.Size = new System.Drawing.Size(199, 18);
+            this.deviceOSLabel.Size = new System.Drawing.Size(232, 18);
             this.deviceOSLabel.TabIndex = 31;
             this.deviceOSLabel.Text = "Windows 7 Home Basic x86";
             // 
@@ -192,7 +207,7 @@
             this.deviceView.HideSelection = false;
             this.deviceView.Location = new System.Drawing.Point(177, 5);
             this.deviceView.Name = "deviceView";
-            this.deviceView.Size = new System.Drawing.Size(397, 411);
+            this.deviceView.Size = new System.Drawing.Size(363, 411);
             this.deviceView.TabIndex = 27;
             this.deviceView.UseCompatibleStateImageBehavior = false;
             this.deviceView.View = System.Windows.Forms.View.Tile;
@@ -208,9 +223,8 @@
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(581, 81);
+            this.label8.Location = new System.Drawing.Point(2, 81);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(130, 13);
             this.label8.TabIndex = 30;
@@ -220,27 +234,18 @@
             // 
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(30, 401);
+            this.statusLabel.Location = new System.Drawing.Point(24, 401);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(41, 13);
             this.statusLabel.TabIndex = 29;
             this.statusLabel.Text = "Статус";
             // 
-            // statusImg
-            // 
-            this.statusImg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.statusImg.Location = new System.Drawing.Point(10, 400);
-            this.statusImg.Name = "statusImg";
-            this.statusImg.Size = new System.Drawing.Size(16, 16);
-            this.statusImg.TabIndex = 28;
-            this.statusImg.TabStop = false;
-            // 
             // templatesBtn
             // 
             this.templatesBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.templatesBtn.Location = new System.Drawing.Point(6, 63);
+            this.templatesBtn.Location = new System.Drawing.Point(6, 109);
             this.templatesBtn.Name = "templatesBtn";
-            this.templatesBtn.Size = new System.Drawing.Size(165, 23);
+            this.templatesBtn.Size = new System.Drawing.Size(165, 24);
             this.templatesBtn.TabIndex = 38;
             this.templatesBtn.Text = "Шаблоны";
             this.templatesBtn.UseVisualStyleBackColor = true;
@@ -249,43 +254,159 @@
             // settingsBtn
             // 
             this.settingsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.settingsBtn.Location = new System.Drawing.Point(6, 90);
+            this.settingsBtn.Location = new System.Drawing.Point(6, 136);
             this.settingsBtn.Name = "settingsBtn";
-            this.settingsBtn.Size = new System.Drawing.Size(165, 23);
+            this.settingsBtn.Size = new System.Drawing.Size(165, 24);
             this.settingsBtn.TabIndex = 39;
             this.settingsBtn.Text = "Параметры";
             this.settingsBtn.UseVisualStyleBackColor = true;
             this.settingsBtn.Click += new System.EventHandler(this.OpenSettings);
             // 
+            // groupSelect
+            // 
+            this.groupSelect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupSelect.FormattingEnabled = true;
+            this.groupSelect.Location = new System.Drawing.Point(5, 304);
+            this.groupSelect.Name = "groupSelect";
+            this.groupSelect.Size = new System.Drawing.Size(229, 21);
+            this.groupSelect.TabIndex = 40;
+            this.groupSelect.SelectedIndexChanged += new System.EventHandler(this.onGroupChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(2, 288);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 41;
+            this.label1.Text = "Шаблон:";
+            // 
+            // saveDevicesBtn
+            // 
+            this.saveDevicesBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.saveDevicesBtn.Location = new System.Drawing.Point(6, 34);
+            this.saveDevicesBtn.Name = "saveDevicesBtn";
+            this.saveDevicesBtn.Size = new System.Drawing.Size(165, 24);
+            this.saveDevicesBtn.TabIndex = 43;
+            this.saveDevicesBtn.Text = "Сохранить устройства";
+            this.saveDevicesBtn.UseVisualStyleBackColor = true;
+            this.saveDevicesBtn.Click += new System.EventHandler(this.SaveDevices);
+            // 
+            // syncBtn
+            // 
+            this.syncBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.syncBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.syncBtn.Location = new System.Drawing.Point(5, 364);
+            this.syncBtn.Name = "syncBtn";
+            this.syncBtn.Size = new System.Drawing.Size(229, 23);
+            this.syncBtn.TabIndex = 44;
+            this.syncBtn.Text = "Синхронизировать";
+            this.syncBtn.UseVisualStyleBackColor = true;
+            // 
+            // executeBtn
+            // 
+            this.executeBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.executeBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.executeBtn.Location = new System.Drawing.Point(5, 335);
+            this.executeBtn.Name = "executeBtn";
+            this.executeBtn.Size = new System.Drawing.Size(229, 23);
+            this.executeBtn.TabIndex = 45;
+            this.executeBtn.Text = "Выполнить";
+            this.executeBtn.UseVisualStyleBackColor = true;
+            this.executeBtn.Click += new System.EventHandler(this.OpenExecute);
+            // 
+            // openScriptsBtn
+            // 
+            this.openScriptsBtn.Image = global::RCClient.Properties.Resources.script;
+            this.openScriptsBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.openScriptsBtn.Location = new System.Drawing.Point(6, 165);
+            this.openScriptsBtn.Name = "openScriptsBtn";
+            this.openScriptsBtn.Size = new System.Drawing.Size(165, 24);
+            this.openScriptsBtn.TabIndex = 46;
+            this.openScriptsBtn.Text = "Сценарии";
+            this.openScriptsBtn.UseVisualStyleBackColor = true;
+            this.openScriptsBtn.Click += new System.EventHandler(this.OpenScripts);
+            // 
+            // statusImg
+            // 
+            this.statusImg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.statusImg.Location = new System.Drawing.Point(4, 400);
+            this.statusImg.Name = "statusImg";
+            this.statusImg.Size = new System.Drawing.Size(16, 16);
+            this.statusImg.TabIndex = 28;
+            this.statusImg.TabStop = false;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.discoverBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.saveDevicesBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.logsBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.templatesBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.settingsBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.openScriptsBtn);
+            this.splitContainer1.Panel1.Controls.Add(this.imgButton1);
+            this.splitContainer1.Panel1.Controls.Add(this.deviceView);
+            this.splitContainer1.Panel1.Controls.Add(this.statusImg);
+            this.splitContainer1.Panel1.Controls.Add(this.statusLabel);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.executeBtn);
+            this.splitContainer1.Panel2.Controls.Add(this.syncBtn);
+            this.splitContainer1.Panel2.Controls.Add(this.label1);
+            this.splitContainer1.Panel2.Controls.Add(this.groupSelect);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceRAMLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.label3);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceVideoLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.connectBtn);
+            this.splitContainer1.Panel2.Controls.Add(this.label6);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceIPLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceCPULabel);
+            this.splitContainer1.Panel2.Controls.Add(this.label2);
+            this.splitContainer1.Panel2.Controls.Add(this.label4);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceNameLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.deviceOSLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.label8);
+            this.splitContainer1.Size = new System.Drawing.Size(790, 420);
+            this.splitContainer1.SplitterDistance = 543;
+            this.splitContainer1.TabIndex = 47;
+            // 
+            // imgButton1
+            // 
+            this.imgButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.imgButton1.BackColor = System.Drawing.SystemColors.Window;
+            this.imgButton1.image = global::RCClient.Properties.Resources.refresh;
+            this.imgButton1.Location = new System.Drawing.Point(517, 393);
+            this.imgButton1.Name = "imgButton1";
+            this.imgButton1.Size = new System.Drawing.Size(20, 20);
+            this.imgButton1.TabIndex = 42;
+            this.imgButton1.Click += new System.EventHandler(this.Refresh);
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.settingsBtn);
-            this.Controls.Add(this.templatesBtn);
-            this.Controls.Add(this.deviceRAMLabel);
-            this.Controls.Add(this.discoverBtn);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.logsBtn);
-            this.Controls.Add(this.deviceVideoLabel);
-            this.Controls.Add(this.connectBtn);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.deviceIPLabel);
-            this.Controls.Add(this.deviceCPULabel);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.deviceNameLabel);
-            this.Controls.Add(this.deviceOSLabel);
-            this.Controls.Add(this.deviceView);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.statusImg);
-            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "Dashboard";
             this.Size = new System.Drawing.Size(790, 420);
             this.Load += new System.EventHandler(this.onLoad);
             ((System.ComponentModel.ISupportInitialize)(this.statusImg)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -312,5 +433,13 @@
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Button templatesBtn;
         private System.Windows.Forms.Button settingsBtn;
+        private System.Windows.Forms.ComboBox groupSelect;
+        private System.Windows.Forms.Label label1;
+        private Components.ImgButton imgButton1;
+        private System.Windows.Forms.Button saveDevicesBtn;
+        private System.Windows.Forms.Button syncBtn;
+        private System.Windows.Forms.Button executeBtn;
+        private System.Windows.Forms.Button openScriptsBtn;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
