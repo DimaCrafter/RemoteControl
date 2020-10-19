@@ -41,6 +41,12 @@ namespace RCClient.UI.Pages {
         }
 
         private async void DiscoverDevices (object sender = null, EventArgs e = null) {
+            if (Device.isDiscovering) {
+                Device.isDiscovering = false;
+                return;
+            }
+
+            discoverBtn.Text = "Остановить поиск";
             WriteStatus("Поиск устройств...", Status.Progress);
             var sw = new Stopwatch();
             sw.Start();
@@ -57,6 +63,7 @@ namespace RCClient.UI.Pages {
             sw.Stop();
             WriteStatus("Поиск устройств завершён", Status.Done);
             Logs.Write($"Поиск устройств завершён за {(sw.ElapsedMilliseconds / 1000f):N2} сек.");
+            discoverBtn.Text = "Поиск устройств";
         }
 
         private const string INFO_PLACEHOLDER = "--------------------------------------\n--------------";
@@ -233,6 +240,26 @@ namespace RCClient.UI.Pages {
 
             var form = new ExecuteForm(devices);
             form.Show();
+        }
+
+        private void syncBtn_Click (object sender, EventArgs e) {
+            var devices = new List<Device>();
+            foreach (ListViewItem item in deviceView.SelectedItems) {
+                devices.Add(new Device(IPAddress.Parse(item.Text)));
+            }
+
+            ExecutingManager.Open(ParentForm, devices, new Common.ExecScript {
+                name = "[Синхронизация]",
+                steps = new List<Dictionary<string, string>> {
+                    new Dictionary<string, string> {
+                        { "type", "sync" }
+                    }
+                }
+            });
+        }
+
+        private void connectBtn_Click (object sender, EventArgs e) {
+            new AnyDeskForm(deviceView.SelectedItems[0].Text).Show();
         }
     }
 }

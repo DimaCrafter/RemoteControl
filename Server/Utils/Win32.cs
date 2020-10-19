@@ -289,5 +289,182 @@ namespace RCServer.Utils {
 
             return result;
         }
+
+        // Date & Time section
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SYSTEMTIME {
+            public short wYear;
+            public short wMonth;
+            public short wDayOfWeek;
+            public short wDay;
+            public short wHour;
+            public short wMinute;
+            public short wSecond;
+            public short wMilliseconds;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool SetSystemTime (ref SYSTEMTIME st);
+
+        public static bool SetSystemTime (DateTime date) {
+            var st = new SYSTEMTIME {
+                wYear = (short) date.Year,
+                wMonth = (short) date.Month,
+                wDayOfWeek = (short) date.DayOfWeek,
+                wDay = (short) date.Day,
+                wHour = (short) date.Hour,
+                wMinute = (short) date.Minute,
+                wSecond = (short) date.Second,
+                wMilliseconds = (short) date.Millisecond
+            };
+
+            return SetSystemTime(ref st);
+        }
+
+        public enum SW : int {
+            /// <summary>
+            /// Hides the window and activates another window.
+            /// </summary>
+            HIDE = 0,
+
+            /// <summary>
+            /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
+            /// </summary>
+            SHOWNORMAL = 1,
+
+            /// <summary>
+            /// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
+            /// </summary>
+            NORMAL = 1,
+
+            /// <summary>
+            /// Activates the window and displays it as a minimized window.
+            /// </summary>
+            SHOWMINIMIZED = 2,
+
+            /// <summary>
+            /// Activates the window and displays it as a maximized window.
+            /// </summary>
+            SHOWMAXIMIZED = 3,
+
+            /// <summary>
+            /// Maximizes the specified window.
+            /// </summary>
+            MAXIMIZE = 3,
+
+            /// <summary>
+            /// Displays a window in its most recent size and position. This value is similar to <see cref="SW.SHOWNORMAL"/>, except the window is not activated.
+            /// </summary>
+            SHOWNOACTIVATE = 4,
+
+            /// <summary>
+            /// Activates the window and displays it in its current size and position.
+            /// </summary>
+            SHOW = 5,
+
+            /// <summary>
+            /// Minimizes the specified window and activates the next top-level window in the z-order.
+            /// </summary>
+            MINIMIZE = 6,
+
+            /// <summary>
+            /// Displays the window as a minimized window. This value is similar to <see cref="SW.SHOWMINIMIZED"/>, except the window is not activated.
+            /// </summary>
+            SHOWMINNOACTIVE = 7,
+
+            /// <summary>
+            /// Displays the window in its current size and position. This value is similar to <see cref="SW.SHOW"/>, except the window is not activated.
+            /// </summary>
+            SHOWNA = 8,
+
+            /// <summary>
+            /// Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
+            /// </summary>
+            RESTORE = 9,
+
+            /// <summary>
+            /// Items 10, 11 and 11 existed in the VB definition but not the c# definition - so I am assuming this was a mistake and have added them here.
+            ///  Please forgive me if this is wrong!  I don't think it should have any negative impact.
+            ///  According to what I have read elsewhere: The SHOWDEFAULT makes sure the window is restored prior to showing, then activating.
+            ///  And the 11's try to coerce a window to minimized or maximized.
+            /// </summary>
+            SHOWDEFAULT = 10,
+            FORCEMINIMIZE = 11,
+            MAX = 11
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow (IntPtr hWnd, int nCmdShow);
+
+        public enum GWL {
+            /// <summary>Sets a new address for the window procedure.</summary>
+            /// <remarks>You cannot change this attribute if the window does not belong to the same process as the calling thread.</remarks>
+            WNDPROC = -4,
+
+            /// <summary>Sets a new application instance handle.</summary>
+            GWLP_HINSTANCE = -6,
+
+            GWLP_HWNDPARENT = -8,
+
+            /// <summary>Sets a new identifier of the child window.</summary>
+            /// <remarks>The window cannot be a top-level window.</remarks>
+            ID = -12,
+
+            /// <summary>Sets a new window style.</summary>
+            STYLE = -16,
+
+            /// <summary>Sets a new extended window style.</summary>
+            /// <remarks>See <see cref="ExWindowStyles"/>.</remarks>
+            EXSTYLE = -20,
+
+            /// <summary>Sets the user data associated with the window.</summary>
+            /// <remarks>This data is intended for use by the application that created the window. Its value is initially zero.</remarks>
+            USERDATA = -21,
+
+            /// <summary>Sets the return value of a message processed in the dialog box procedure.</summary>
+            /// <remarks>Only applies to dialog boxes.</remarks>
+            MSGRESULT = 0,
+
+            /// <summary>Sets new extra information that is private to the application, such as handles or pointers.</summary>
+            /// <remarks>Only applies to dialog boxes.</remarks>
+            USER = 8,
+
+            /// <summary>Sets the new address of the dialog box procedure.</summary>
+            /// <remarks>Only applies to dialog boxes.</remarks>
+            DLGPROC = 4
+        }
+
+        public enum WS: uint {
+            OVERLAPPED = 0x00000000,
+            POPUP = 0x80000000,
+            CHILD = 0x40000000,
+            MINIMIZE = 0x20000000,
+            VISIBLE = 0x10000000,
+            DISABLED = 0x08000000,
+            CLIPSIBLINGS = 0x04000000,
+            CLIPCHILDREN = 0x02000000,
+            MAXIMIZE = 0x01000000,
+            CAPTION = 0x00C00000,     /* WS_BORDER | WS_DLGFRAME  */
+            BORDER = 0x00800000,
+            DLGFRAME = 0x00400000,
+            VSCROLL = 0x00200000,
+            HSCROLL = 0x00100000,
+            SYSMENU = 0x00080000,
+            THICKFRAME = 0x00040000,
+            GROUP = 0x00020000,
+            TABSTOP = 0x00010000,
+
+            MINIMIZEBOX = 0x00020000,
+            MAXIMIZEBOX = 0x00010000,
+
+            EX_DLGMODALFRAME = 0x00000001,
+            EX_NOPARENTNOTIFY = 0x00000004,
+            EX_TOPMOST = 0x00000008,
+            EX_ACCEPTFILES = 0x00000010,
+            EX_TRANSPARENT = 0x00000020,
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        public static extern IntPtr SetWindowLong (IntPtr hWnd, int nIndex, uint dwNewLong);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 
@@ -14,6 +15,16 @@ namespace RCServer.Utils {
 
             tasks += () => {
                 Win32.SendMessage(_desktopHandle, Win32.LVM_SETITEMPOSITION, names.IndexOf(shortcut.name), pos);
+            };
+        }
+
+        public void UpdateBackground (string path) {
+            tasks += () => {
+                var regDektop = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
+                if (regDektop != null) {
+                    regDektop.SetValue("Wallpaper", path, RegistryValueKind.String);
+                    regDektop.Close();
+                }
             };
         }
 

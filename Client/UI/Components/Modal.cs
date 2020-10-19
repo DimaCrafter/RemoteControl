@@ -26,6 +26,7 @@ namespace RCClient.UI.Components {
             Close();
         }
 
+        protected bool isResizable = false;
         public static Task<ModalResult> Open (Form parent, params object[] args) {
             var form = Activator.CreateInstance(typeof(T), args) as Modal<T, V>;
             form.Show();
@@ -35,7 +36,9 @@ namespace RCClient.UI.Components {
             );
 
             form.MinimumSize = form.Size;
-            form.MaximumSize = form.Size;
+            if (!form.isResizable) {
+                form.MaximumSize = form.Size;
+            }
 
             EventHandler handler = (sender, e) => {
                 form.Activate();

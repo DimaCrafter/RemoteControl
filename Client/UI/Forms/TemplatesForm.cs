@@ -18,13 +18,13 @@ namespace RCClient {
                 new Tab {
                     name = "Рабочий стол",
                     icon = Icons.GetSystemIcon("imageres.dll", -183, false),
-                    content = new DesktopPage()
+                    content = typeof(DesktopPage)
                 }
             };
 
             tabs.AddTab(new Tab {
                 name = "Главная",
-                content = new TemplatesPage(dependentTabs),
+                contentInstance = new TemplatesPage(dependentTabs),
                 icon = Icons.GetSystemIcon("shell32.dll", 165, false),
                 isClosable = false
             }, true);

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RCClient.Properties;
+using Common;
 using RCClient.UI.Modals;
 
 namespace RCClient.UI.Pages {
@@ -48,8 +42,9 @@ namespace RCClient.UI.Pages {
             pbox.BackgroundImage = resized;
             pbox.BackgroundImageLayout = ImageLayout.Stretch;
         }
+        public static DeviceTemplate template;
 
-        private Bitmap wallpaper = Resources.wallpaper;
+        private Bitmap wallpaper = Properties.Resources.wallpaper;
         private void CustomBorderForm_Load (object sender, EventArgs e) {
             FillPictureBox(listView, wallpaper);
         }
@@ -81,6 +76,15 @@ namespace RCClient.UI.Pages {
             }
         }
 
+        private void listView1_MouseUp (object sender, MouseEventArgs e) {
+            if (heldDownItem != null) {
+                heldDownItem.Position = heldMousePoint;
+                CalcGridAligment((DesktopItem) heldDownItem);
+
+                heldDownItem = null;
+            }
+        }
+
         private const int ITEM_SIZE = 72;
         private const int LIST_PADDING = 10;
         private void CalcGridAligment (DesktopItem item) {
@@ -106,6 +110,12 @@ namespace RCClient.UI.Pages {
                     item.yGridOffset = (item.Position.Y - listView.Height) / (ITEM_SIZE + LIST_PADDING);
                 }
             }
+
+            var shortcut = template.desktopShortcuts[item.Index];
+            // TODO: normal convertion
+            shortcut.aligment = (ShortcutAlignment) Enum.Parse(typeof(ShortcutAlignment), item.alignment.ToString());
+            shortcut.xGridOffset = item.xGridOffset;
+            shortcut.yGridOffset = item.yGridOffset;
 
             PlaceByGrid(item);
         }
@@ -135,20 +145,10 @@ namespace RCClient.UI.Pages {
 
             var maxX = listView.Width - LIST_PADDING - ITEM_SIZE;
             var maxY = listView.Height - LIST_PADDING - ITEM_SIZE;
-            if (x > maxX)
-                x = maxX;
-            if (y > maxY)
-                y = maxY;
+            if (x > maxX) x = maxX;
+            if (y > maxY) y = maxY;
 
             item.Position = new Point(x, y);
-        }
-
-        private void listView1_MouseUp (object sender, MouseEventArgs e) {
-            if (heldDownItem != null) {
-                heldDownItem.Position = heldMousePoint;
-                CalcGridAligment((DesktopItem) heldDownItem);
-                heldDownItem = null;
-            }
         }
 
         private void listView1_DoubleClick (object sender, EventArgs e) {
@@ -168,6 +168,10 @@ namespace RCClient.UI.Pages {
                 ImageIndex = listView.LargeImageList.Images.Count - 1
             };
             listView.Items.Add(item);
+            template.desktopShortcuts.Add(new Common.Shortcut {
+                name = result.value.name,
+                target = result.value.path
+            });
 
             item.Position = heldDownPoint;
             CalcGridAligment(item);
@@ -185,6 +189,10 @@ namespace RCClient.UI.Pages {
                 ImageIndex = listView.LargeImageList.Images.Count - 1
             };
             listView.Items.Add(item);
+            template.desktopShortcuts.Add(new Common.Shortcut {
+                name = result.value.name,
+                target = result.value.url
+            });
 
             item.Position = heldDownPoint;
             CalcGridAligment(item);

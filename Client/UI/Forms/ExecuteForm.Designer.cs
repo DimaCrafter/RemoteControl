@@ -85,10 +85,11 @@
             this.scriptList.FormattingEnabled = true;
             this.scriptList.IntegralHeight = false;
             this.scriptList.ItemHeight = 16;
-            this.scriptList.Location = new System.Drawing.Point(12, 78);
+            this.scriptList.Location = new System.Drawing.Point(15, 78);
             this.scriptList.Name = "scriptList";
             this.scriptList.Size = new System.Drawing.Size(271, 249);
             this.scriptList.TabIndex = 4;
+            this.scriptList.DoubleClick += new System.EventHandler(this.Execute);
             // 
             // ExecuteForm
             // 

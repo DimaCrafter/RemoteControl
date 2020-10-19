@@ -1,30 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 
 namespace Common {
-    public enum PacketType : byte {
-        Info,
-        Auth,
-        ExecuteScript,
-        RequestVNC
-    }
-
-    public class DeviceInfo : SerializableStruct<DeviceInfo> {
-        public string name;
-        public string os;
-        public int ram;
-        public string cpuName;
-        public int cpuCores;
-        public string videocard;
-        public int screenWidth;
-        public int screenHeight;
-        public int bpp;
-    }
-
-    public abstract class SerializableStruct<T> where T: SerializableStruct<T> {
+    public abstract class SerializableStruct<T> where T : SerializableStruct<T> {
         private delegate void Writer (BinaryWriter writer, object value);
         private delegate object Reader (BinaryReader reader);
 
@@ -205,7 +184,7 @@ namespace Common {
                 } else {
                     return step;
                 }
-            // Complicated types
+                // Complicated types
             } else if (type.BaseType.Name == "SerializableStruct`1") {
                 var serializer = type.GetMethod("Serialize", new Type[] { typeof(BinaryWriter) });
                 var deserializer = type.BaseType.GetMethod("Deserialize", new Type[] { typeof(BinaryReader) });
@@ -278,34 +257,5 @@ namespace Common {
 
             return null;
         }
-    }
-
-    public class Shortcut : SerializableStruct<Shortcut> {
-        public string name;
-        public string path;
-        public string target;
-        public string icon;
-
-        public int xGridOffset = 0;
-        public int yGridOffset = 0;
-        public ShortcutAlignment aligment = 0;
-    }
-
-    public enum ShortcutAlignment {
-        TopLeft, TopRight, BottomRight, BottomLeft
-    }
-
-    public class ExecScript : SerializableStruct<ExecScript> {
-        public string name;
-        public List<Dictionary<string, string>> steps = new List<Dictionary<string, string>>();
-    }
-
-    public class ExecState : SerializableStruct<ExecState> {
-        // 0-100      Процент выполнения
-        // 250 (0xFA) Задача запущена
-        // 254 (0xFE) Задача выполнена с ошибкой
-        // 255 (0xFF) Все задачи выполнены
-        public byte percent;
-        public string step;
     }
 }

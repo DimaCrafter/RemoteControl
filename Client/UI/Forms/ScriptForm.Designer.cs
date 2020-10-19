@@ -31,6 +31,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.stepTypeBox = new System.Windows.Forms.ComboBox();
             this.propsPanel = new System.Windows.Forms.Panel();
+            this.saveDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openDialog = new System.Windows.Forms.OpenFileDialog();
             this.stepDownBtn = new RCClient.UI.Components.ImgButton();
             this.stepUpBtn = new RCClient.UI.Components.ImgButton();
             this.renameScriptBtn = new RCClient.UI.Components.ImgButton();
@@ -38,6 +40,8 @@
             this.removeScriptBtn = new RCClient.UI.Components.ImgButton();
             this.addStepBtn = new RCClient.UI.Components.ImgButton();
             this.createScriptBtn = new RCClient.UI.Components.ImgButton();
+            this.importBtn = new RCClient.UI.Components.ImgButton();
+            this.exportBtn = new RCClient.UI.Components.ImgButton();
             this.SuspendLayout();
             // 
             // scriptList
@@ -129,6 +133,16 @@
             this.propsPanel.Size = new System.Drawing.Size(390, 358);
             this.propsPanel.TabIndex = 7;
             // 
+            // saveDialog
+            // 
+            this.saveDialog.DefaultExt = "rcs";
+            this.saveDialog.Filter = "RemoteControl Script|*.rcs|Все файлы|*.*";
+            // 
+            // openDialog
+            // 
+            this.openDialog.DefaultExt = "rcs";
+            this.openDialog.Filter = "RemoteControl Script|*.rcs|Все файлы|*.*";
+            // 
             // stepDownBtn
             // 
             this.stepDownBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -167,6 +181,7 @@
             this.removeStepBtn.Name = "removeStepBtn";
             this.removeStepBtn.Size = new System.Drawing.Size(20, 20);
             this.removeStepBtn.TabIndex = 11;
+            this.removeStepBtn.Click += new System.EventHandler(this.removeStepBtn_Click);
             // 
             // removeScriptBtn
             // 
@@ -198,11 +213,33 @@
             this.createScriptBtn.TabIndex = 8;
             this.createScriptBtn.Click += new System.EventHandler(this.CreateScript);
             // 
+            // importBtn
+            // 
+            this.importBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.importBtn.image = global::RCClient.Properties.Resources.import;
+            this.importBtn.Location = new System.Drawing.Point(175, 412);
+            this.importBtn.Name = "importBtn";
+            this.importBtn.Size = new System.Drawing.Size(20, 20);
+            this.importBtn.TabIndex = 15;
+            this.importBtn.Click += new System.EventHandler(this.Import);
+            // 
+            // exportBtn
+            // 
+            this.exportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.exportBtn.image = global::RCClient.Properties.Resources.export;
+            this.exportBtn.Location = new System.Drawing.Point(150, 412);
+            this.exportBtn.Name = "exportBtn";
+            this.exportBtn.Size = new System.Drawing.Size(20, 20);
+            this.exportBtn.TabIndex = 16;
+            this.exportBtn.Click += new System.EventHandler(this.Export);
+            // 
             // ScriptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(820, 441);
+            this.Controls.Add(this.exportBtn);
+            this.Controls.Add(this.importBtn);
             this.Controls.Add(this.stepDownBtn);
             this.Controls.Add(this.stepUpBtn);
             this.Controls.Add(this.renameScriptBtn);
@@ -244,5 +281,9 @@
         private Components.ImgButton renameScriptBtn;
         private Components.ImgButton stepUpBtn;
         private Components.ImgButton stepDownBtn;
+        private System.Windows.Forms.SaveFileDialog saveDialog;
+        private System.Windows.Forms.OpenFileDialog openDialog;
+        private Components.ImgButton importBtn;
+        private Components.ImgButton exportBtn;
     }
 }

@@ -45,7 +45,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.processNameInput.Location = new System.Drawing.Point(6, 20);
             this.processNameInput.Name = "processNameInput";
-            this.processNameInput.Size = new System.Drawing.Size(1214, 20);
+            this.processNameInput.Size = new System.Drawing.Size(1577, 20);
             this.processNameInput.TabIndex = 1;
             this.processNameInput.TextChanged += new System.EventHandler(this.onProcessNameChanged);
             // 
@@ -69,7 +69,7 @@
             this.timoutInput.Location = new System.Drawing.Point(6, 83);
             this.timoutInput.MaxLength = 5;
             this.timoutInput.Name = "timoutInput";
-            this.timoutInput.Size = new System.Drawing.Size(1214, 20);
+            this.timoutInput.Size = new System.Drawing.Size(1577, 20);
             this.timoutInput.TabIndex = 3;
             this.timoutInput.TextChanged += new System.EventHandler(this.onTimoutChanged);
             // 
@@ -90,7 +90,7 @@
             this.Controls.Add(this.processNameInput);
             this.Controls.Add(this.label1);
             this.Name = "CloseProgram";
-            this.Size = new System.Drawing.Size(1223, 695);
+            this.Size = new System.Drawing.Size(1586, 695);
             this.ResumeLayout(false);
             this.PerformLayout();
 

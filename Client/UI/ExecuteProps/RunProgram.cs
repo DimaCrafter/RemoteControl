@@ -1,8 +1,5 @@
-﻿using Common;
-using RCClient.UI.Modals;
+﻿using RCClient.UI.Modals;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -11,22 +8,21 @@ namespace RCClient.UI.ExecuteProps {
     public partial class RunProgram : Executable {
         public override Image icon => Icons.GetSystemBitmap("shell32.dll", 24, false);
         public RunProgram () {
+            type = "run";
             name = "Выполнить";
+
             InitializeComponent();
             openFileBtn.image = Icons.GetSystemBitmap("shell32.dll", 0, false);
         }
 
         public override void Reset () {
-            result = new Dictionary<string, string>();
-            result["type"] = "0";
-
             commandInput.Text = "";
             argsBox.Items.Clear();
             wsNormal.Checked = true;
+            waitCheck.Checked = false;
         }
 
         public override void LoadResult () {
-            result["type"] = "0";
             commandInput.Text = GetValue("cmd", "");
             switch (GetValue("windowState", "Normal")) {
                 case "Normal":
@@ -48,6 +44,8 @@ namespace RCClient.UI.ExecuteProps {
             for (var i = 0; i < argsCount; i++) {
                 argsBox.Items.Add(result["arg" + i]);
             }
+
+            waitCheck.Checked = bool.Parse(GetValue("wait", "false"));
         }
 
         private async void EditArgument (object sender, EventArgs e) {
@@ -91,6 +89,10 @@ namespace RCClient.UI.ExecuteProps {
 
         private void commandInput_TextChanged (object sender, EventArgs e) {
             result["cmd"] = commandInput.Text;
+        }
+
+        private void waitCheck_CheckedChanged (object sender, EventArgs e) {
+            result["wait"] = waitCheck.Checked.ToString();
         }
     }
 }

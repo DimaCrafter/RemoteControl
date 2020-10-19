@@ -52,13 +52,17 @@ namespace RCClient.UI.Pages {
                 deviceCountLabel.Text = "0";
             } else {
                 selected = Settings.data.templates[groupsBox.SelectedIndex];
-                foreach (var tab in tabs) tab.visible = true;
+                foreach (var tab in tabs) {
+                    tab.visible = true;
+                }
 
                 nameLabel.Text = (string) groupsBox.Items[groupsBox.SelectedIndex];
                 removeBtn.Enabled = true;
                 renameBtn.Enabled = true;
                 devicesList.Items.AddRange(selected.devices.ToArray());
                 deviceCountLabel.Text = selected.devices.Count.ToString();
+
+                DesktopPage.template = selected;
             }
         }
 

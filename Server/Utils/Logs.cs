@@ -87,7 +87,7 @@ namespace RCServer.Utils {
             name = Path.GetFileNameWithoutExtension(path);
         }
 
-        private static readonly Regex LINE_REGEX = new Regex(@"^\[([0-9]{2}:[0-9]{2}:[0-9]{2})\] \[([a-zA-z0-9]+)\] (.*)$");
+        private static readonly Regex LINE_REGEX = new Regex(@"^\[([0-9]{2}:[0-9]{2}:[0-9]{2})\] \[([a-zA-z0-9]+)(?:\s[^]]+)?] (.*)$");
         private int linesPrinted = 0;
         public void Print (RichTextBox textarea) {
             textarea.Clear();
@@ -129,7 +129,10 @@ namespace RCServer.Utils {
                     color = Color.DodgerBlue;
                     break;
                 case "ERR":
-                    color = Color.Red;
+                    color = Color.FromArgb(225, 16, 0);
+                    break;
+                case "Script":
+                    color = Color.FromArgb(0, 188, 212);
                     break;
             }
 

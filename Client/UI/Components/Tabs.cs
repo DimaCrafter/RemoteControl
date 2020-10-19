@@ -20,21 +20,30 @@ namespace RCClient.UI.Components {
 
         public event Action OnTabChange = () => {};
         public void SelectTab (Tab tab) {
+            if (selected != null && selected.content != null) {
+                selected.contentInstance.Dispose();
+                selected.contentInstance = null;
+            }
+
             selected = tab;
             Controls.Clear();
 
             if (tab != null) {
-                tab.content.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Right;
-                tab.content.Top = TAB_HEIGHT + 1 + tabHeadingPadding / 2;
-                tab.content.Left = 0;
-                tab.content.Width = Width;
-                tab.content.Height = Height - tab.content.Top;
+                if (tab.contentInstance == null) {
+                    tab.contentInstance = (UserControl) Activator.CreateInstance(tab.content);
+                }
 
-                tab.content.BackColorChanged += (sender, e) => {
+                tab.contentInstance.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Right;
+                tab.contentInstance.Top = TAB_HEIGHT + 1 + tabHeadingPadding / 2;
+                tab.contentInstance.Left = 0;
+                tab.contentInstance.Width = Width;
+                tab.contentInstance.Height = Height - tab.contentInstance.Top;
+
+                tab.contentInstance.BackColorChanged += (sender, e) => {
                     Invalidate();
                 };
 
-                Controls.Add(tab.content);
+                Controls.Add(tab.contentInstance);
             }
 
             Invalidate();
@@ -44,7 +53,6 @@ namespace RCClient.UI.Components {
         public void RemoveTab (Tab tab) {
             var i = tabs.IndexOf(tab);
             tabs.Remove(tab);
-            tab.content.Dispose();
 
             if (tab.isSelected) {
                 Tab next = null;
@@ -56,6 +64,11 @@ namespace RCClient.UI.Components {
 
                 SelectTab(next);
             } else {
+                if (tab.contentInstance != null) {
+                    tab.contentInstance.Dispose();
+                    tab.contentInstance = null;
+                }
+
                 Invalidate();
             }
         }
@@ -112,8 +125,8 @@ namespace RCClient.UI.Components {
 
             SolidBrush tabBG, textBrush;
             if (tab.isSelected) {
-                tabBG = new SolidBrush(tab.content.BackColor);
-                textBrush = new SolidBrush(tab.content.ForeColor);
+                tabBG = new SolidBrush(tab.contentInstance.BackColor);
+                textBrush = new SolidBrush(tab.contentInstance.ForeColor);
             } else if (hovered == tab) {
                 tabBG = new SolidBrush(Color.FromArgb(250, 250, 250));
                 textBrush = new SolidBrush(ForeColor);
@@ -223,7 +236,8 @@ namespace RCClient.UI.Components {
 
     public class Tab {
         public string name;
-        public UserControl content;
+        public Type content;
+        public UserControl contentInstance;
         internal Tabs container;
 
         public bool isClosable = true;

@@ -5,8 +5,10 @@ using System.Windows.Forms;
 
 namespace RCClient.UI.ExecuteProps {
     public class Executable: UserControl {
+        public string type { get; protected set; }
         public string name { get; protected set; }
         public virtual Image icon { get; }
+        public int index;
 
         public Dictionary<string, string> result;
         public virtual void Reset () { }

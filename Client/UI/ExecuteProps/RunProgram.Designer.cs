@@ -35,6 +35,8 @@
             this.commandInput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.imgButton1 = new RCClient.UI.Components.ImgButton();
+            this.waitCheck = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -107,7 +109,7 @@
             // 
             this.openFileBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.openFileBtn.image = null;
-            this.openFileBtn.Location = new System.Drawing.Point(1200, 20);
+            this.openFileBtn.Location = new System.Drawing.Point(1540, 20);
             this.openFileBtn.Name = "openFileBtn";
             this.openFileBtn.Size = new System.Drawing.Size(20, 20);
             this.openFileBtn.TabIndex = 4;
@@ -124,7 +126,7 @@
             this.argsBox.ItemHeight = 15;
             this.argsBox.Location = new System.Drawing.Point(6, 59);
             this.argsBox.Name = "argsBox";
-            this.argsBox.Size = new System.Drawing.Size(1214, 497);
+            this.argsBox.Size = new System.Drawing.Size(1554, 458);
             this.argsBox.TabIndex = 3;
             this.argsBox.DoubleClick += new System.EventHandler(this.EditArgument);
             // 
@@ -143,7 +145,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.commandInput.Location = new System.Drawing.Point(6, 20);
             this.commandInput.Name = "commandInput";
-            this.commandInput.Size = new System.Drawing.Size(1188, 20);
+            this.commandInput.Size = new System.Drawing.Size(1528, 20);
             this.commandInput.TabIndex = 1;
             this.commandInput.TextChanged += new System.EventHandler(this.commandInput_TextChanged);
             // 
@@ -161,16 +163,40 @@
             this.imgButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgButton1.BackColor = System.Drawing.SystemColors.Window;
             this.imgButton1.image = global::RCClient.Properties.Resources.close;
-            this.imgButton1.Location = new System.Drawing.Point(1198, 534);
+            this.imgButton1.Location = new System.Drawing.Point(1538, 495);
             this.imgButton1.Name = "imgButton1";
             this.imgButton1.Size = new System.Drawing.Size(20, 20);
             this.imgButton1.TabIndex = 10;
             this.imgButton1.Click += new System.EventHandler(this.RemoveArgument);
             // 
+            // waitCheck
+            // 
+            this.waitCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.waitCheck.AutoSize = true;
+            this.waitCheck.Location = new System.Drawing.Point(6, 539);
+            this.waitCheck.Name = "waitCheck";
+            this.waitCheck.Size = new System.Drawing.Size(149, 17);
+            this.waitCheck.TabIndex = 11;
+            this.waitCheck.Text = "Дождаться выполнения";
+            this.waitCheck.UseVisualStyleBackColor = true;
+            this.waitCheck.CheckedChanged += new System.EventHandler(this.waitCheck_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 523);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Доп. параметры:";
+            // 
             // RunProgram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.waitCheck);
             this.Controls.Add(this.imgButton1);
             this.Controls.Add(this.wsMaximized);
             this.Controls.Add(this.wsMinimized);
@@ -183,7 +209,7 @@
             this.Controls.Add(this.commandInput);
             this.Controls.Add(this.label1);
             this.Name = "RunProgram";
-            this.Size = new System.Drawing.Size(1223, 612);
+            this.Size = new System.Drawing.Size(1563, 612);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,5 +229,7 @@
         private System.Windows.Forms.RadioButton wsMinimized;
         private System.Windows.Forms.RadioButton wsMaximized;
         private Components.ImgButton imgButton1;
+        private System.Windows.Forms.CheckBox waitCheck;
+        private System.Windows.Forms.Label label4;
     }
 }

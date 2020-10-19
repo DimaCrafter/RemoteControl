@@ -123,6 +123,7 @@
             this.connectBtn.TabIndex = 23;
             this.connectBtn.Text = "Подключиться";
             this.connectBtn.UseVisualStyleBackColor = true;
+            this.connectBtn.Click += new System.EventHandler(this.connectBtn_Click);
             // 
             // label6
             // 
@@ -304,6 +305,7 @@
             this.syncBtn.TabIndex = 44;
             this.syncBtn.Text = "Синхронизировать";
             this.syncBtn.UseVisualStyleBackColor = true;
+            this.syncBtn.Click += new System.EventHandler(this.syncBtn_Click);
             // 
             // executeBtn
             // 

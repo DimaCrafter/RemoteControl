@@ -9,12 +9,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RCClient</RootNamespace>
     <AssemblyName>RCClient</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,9 +28,9 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -67,6 +68,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -84,12 +86,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\Common.cs">
-      <Link>Common.cs</Link>
+    <Compile Include="..\Common\Common\**\*.*">
+      <Link>Common\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
     <Compile Include="Device.cs" />
     <Compile Include="DeviceTemplate.cs" />
     <Compile Include="Icons.cs" />
+    <Compile Include="UI\Components\ObserverView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Components\ReadOnlyTree.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\Remove.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\Remove.Designer.cs">
+      <DependentUpon>Remove.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\Move.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\Move.Designer.cs">
+      <DependentUpon>Move.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ExecuteProps\Executable.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,11 +119,47 @@
     <Compile Include="UI\ExecuteProps\CloseProgram.Designer.cs">
       <DependentUpon>CloseProgram.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ExecuteProps\Copy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\Copy.Designer.cs">
+      <DependentUpon>Copy.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ExecuteProps\RunProgram.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\ExecuteProps\RunProgram.Designer.cs">
       <DependentUpon>RunProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\WindowsMaintenance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\WindowsMaintenance.Designer.cs">
+      <DependentUpon>WindowsMaintenance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\WaitDevice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\WaitDevice.Designer.cs">
+      <DependentUpon>WaitDevice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\SystemAction.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\SystemAction.Designer.cs">
+      <DependentUpon>SystemAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\SyncTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ExecuteProps\SyncTime.Designer.cs">
+      <DependentUpon>SyncTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\AnyDeskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AnyDeskForm.Designer.cs">
+      <DependentUpon>AnyDeskForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\ExecuteForm.cs">
       <SubType>Form</SubType>
@@ -158,12 +214,6 @@
     <Compile Include="UI\Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Modals\ExecutingProgress.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Modals\ExecutingProgress.Designer.cs">
-      <DependentUpon>ExecutingProgress.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Modals\TextPrompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,11 +244,23 @@
     <Compile Include="UI\Pages\DesktopPage.Designer.cs">
       <DependentUpon>DesktopPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\ObserverPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\ObserverPage.Designer.cs">
+      <DependentUpon>ObserverPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\TemplatesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Pages\TemplatesPage.Designer.cs">
       <DependentUpon>TemplatesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Modals\ExecutingManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Modals\ExecutingManager.Designer.cs">
+      <DependentUpon>ExecutingManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -214,8 +276,32 @@
     <EmbeddedResource Include="UI\ExecuteProps\CloseProgram.resx">
       <DependentUpon>CloseProgram.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\Remove.resx">
+      <DependentUpon>Remove.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\Move.resx">
+      <DependentUpon>Move.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\Copy.resx">
+      <DependentUpon>Copy.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ExecuteProps\RunProgram.resx">
       <DependentUpon>RunProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\WindowsMaintenance.resx">
+      <DependentUpon>WindowsMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\WaitDevice.resx">
+      <DependentUpon>WaitDevice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\SystemAction.resx">
+      <DependentUpon>SystemAction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExecuteProps\SyncTime.resx">
+      <DependentUpon>SyncTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\AnyDeskForm.resx">
+      <DependentUpon>AnyDeskForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ExecuteForm.resx">
       <DependentUpon>ExecuteForm.cs</DependentUpon>
@@ -238,9 +324,6 @@
     <EmbeddedResource Include="UI\Components\Modal.resx">
       <DependentUpon>Modal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Modals\ExecutingProgress.resx">
-      <DependentUpon>ExecutingProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Modals\TextPrompt.resx">
       <DependentUpon>TextPrompt.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,8 +339,14 @@
     <EmbeddedResource Include="UI\Pages\DesktopPage.resx">
       <DependentUpon>DesktopPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\ObserverPage.resx">
+      <DependentUpon>ObserverPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\TemplatesPage.resx">
       <DependentUpon>TemplatesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Modals\ExecutingManager.resx">
+      <DependentUpon>ExecutingManager.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -315,6 +404,30 @@
   <ItemGroup>
     <None Include="Resources\moveUp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{f7320ce2-0135-4c4f-b7b2-2ab8f249d9f9}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\progressIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\success.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\connectionLost.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\import.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -327,12 +440,13 @@
 SET ILMERGE_PATH=%25USERPROFILE%25\.nuget\packages\ilmerge\%25ILMERGE_VERSION%25\tools\net452
 
 echo Merging $(TargetName)...
-mkdir bin\dist
-cd bin\dist
+mkdir $(SolutionDir)dist
+cd $(SolutionDir)dist
 
 "%25ILMERGE_PATH%25"\ILMerge.exe $(TargetPath)  ^
   /lib:$(TargetDir) ^
   /out:$(TargetFileName) ^
+  Common.dll ^
   System.Net.IPNetwork.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>

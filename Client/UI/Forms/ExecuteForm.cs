@@ -1,5 +1,4 @@
 ﻿using Common;
-using RCClient.UI.Modals;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -34,7 +33,7 @@ namespace RCClient.UI.Forms {
 
             Close();
             // Locking main form
-            await ExecutingProgress.Open(Application.OpenForms[0], devices, script);
+            await ExecutingManager.Open(Application.OpenForms[0], devices, script);
         }
     }
 }
